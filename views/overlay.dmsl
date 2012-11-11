@@ -1,0 +1,34 @@
+!DOCTYPE html
+
+%html
+	%head#head
+		%title eve
+		:css /css/
+			extra.css
+			bootstrap.min.css
+			bootstrap-responsive.min.css
+
+		:js /js/
+			jquery-1.7.2.min.js
+			bootstrap.min.js
+
+	%body
+		.navbar.navbar-fixed-top .navbar-inner
+			.container
+				%a.btn.btn-navbar
+					[data-toggle=collapse]
+					[data-target=".nav-collapse"]
+					%span.icon-bar
+					%span.icon-bar
+					%span.icon-bar
+
+				%a.brand[href=/] eve
+
+				#profile-menu
+				#console-menu
+
+		.container
+			.row-fluid
+				#sidebar
+				#content
+			%footer

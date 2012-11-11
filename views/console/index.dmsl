@@ -1,0 +1,6 @@
+:extends overlay.dmsl
+
+:include console/toolbar.dmsl
+
+#content
+	.span9

@@ -1,0 +1,21 @@
+#profile-menu
+	.btn-group.pull-right
+		%a.btn.dropdown-toggle
+			[data-toggle=dropdown]
+			[href=#]
+			%i.icon-user
+			{if .User.Name}
+			\ {.User.Name}&nbsp;
+			{else}
+			\ {.User.Email}&nbsp;
+			{end}
+			%span.caret
+		%ul.dropdown-menu
+			%li %a[href=/console/profile] Profile
+			%li.divider
+			%li %a[href=/logout] Sign Out
+
+#console-menu
+	.nav-collapse %ul.nav
+		%li.active %a[href=/console/index] Console
+
