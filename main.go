@@ -1,12 +1,12 @@
 package main
 
 import (
-	"log"
-	"net/http"
 	"dasa.cc/dae"
 	"dasa.cc/dae/user"
-	"labix.org/v2/mgo/bson"
 	"flag"
+	"labix.org/v2/mgo/bson"
+	"log"
+	"net/http"
 )
 
 var adduser = flag.String("adduser", "", "add a new user with the given email")
@@ -19,9 +19,15 @@ func init() {
 	dae.RegisterFileServer("res/")
 	user.RegisterHandlers()
 
+	http.Handle("/", dae.NewHandler(index))
 	http.Handle("/console/profile", dae.NewHandler(dae.Auth, profile))
 	http.Handle("/console/profile/update", dae.NewHandler(dae.Auth, profileUpdate))
 	http.Handle("/console/profile/password", dae.NewHandler(dae.Auth, profilePassword))
+}
+
+func index(w http.ResponseWriter, r *http.Request) *dae.Error {
+	http.Redirect(w, r, "/login", http.StatusFound)
+	return nil
 }
 
 func profile(w http.ResponseWriter, r *http.Request) *dae.Error {
