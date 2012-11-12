@@ -1,6 +1,11 @@
 :extends overlay.dmsl
 
-:include console/toolbar.dmsl
+{$toolbarActive := "profile"}
+:include toolbar.dmsl
+
+#head[super]
+	:js /js/
+		profile.js
 
 #content
 
@@ -15,6 +20,7 @@
 		%ul.nav.nav-tabs
 			%li.active %a[href="#settings"][data-toggle=tab] Profile
 			%li %a[href="#changepass"][data-toggle=tab] Password
+			%li %a[href="#apikeys"][data-toggle=tab] API Keys
 		.tab-content
 
 			#settings.tab-pane.active
@@ -43,3 +49,38 @@
 
 					<br/>
 					%input.btn[type=submit][value=Update]
+
+			#apikeys.tab-pane
+				%form[action=/console/profile/apikeys][method=post]
+					.key-container
+						{if .User.Data}
+						{if .User.Data.apikeys}
+						{range .User.Data.apikeys}
+						%div
+							%div.pull-right %a.btn.btn-small.btn-danger.remove-key[href=#] Remove
+
+							%label[for=keyname] Name
+							%input[name=keyname][type=text][value={.name}]
+							%label[for=keyid] Id
+							%input[name=keyid][type=text][value={.id}]
+							%label[for=keycode] Verification Code
+							%input[name=keycode][type=text][value={.code}]
+							%hr
+						{end}
+						{end}
+						{else}
+						%div
+							%div.pull-right %a.btn.remove-key[href=#] Remove
+
+							%label[for=keyname] Name
+							%input[name=keyname][type=text][value={.name}]
+							%label[for=keyid] Id
+							%input[name=keyid][type=text][value={.id}]
+							%label[for=keycode] Verification Code
+							%input[name=keycode][type=text][value={.code}]
+							%hr
+						{end}
+
+					%a.btn.add-key[href=#] Add Another
+					%input.btn[type=submit][value=Update]
+

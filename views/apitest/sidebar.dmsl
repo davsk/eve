@@ -1,0 +1,41 @@
+#head[super]
+	:js /js/
+		apitest/sidebar.js
+
+#sidebar
+	.span3 .well.sidebar-nav[style="padding-left: 0px !important; padding-right: 0px !important;"]
+
+		%ul#package-list.nav.nav-list
+
+			{if .User.Data.apikeys}
+			%select#select-api-key
+				{range .User.Data.apikeys}
+				%option[value={.id}] {.name}
+				{end}
+			{else}
+			%p No API Keys Found
+			{end}
+
+			%li.nav-header Account
+			%li %a[href=/apitest/characters] Characters
+			%li %a[href=/apitest/status] Status
+
+			%li.divider
+
+			%li.nav-header Character Data
+
+			%li.divider
+
+			%li.nav-header Corporation Information
+
+			%li.divider
+
+			%li.nav-header EVE
+
+			%li.divider
+
+			%li.nav-header Maps
+
+			%li.divider
+
+			%li.nav-header Miscellaneous APIs

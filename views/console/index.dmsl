@@ -1,6 +1,7 @@
 :extends overlay.dmsl
 
-:include console/toolbar.dmsl
+{$toolbarActive := "console"}
+:include toolbar.dmsl
 
 #content
 	.span9

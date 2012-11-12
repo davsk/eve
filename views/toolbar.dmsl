@@ -1,3 +1,7 @@
+#head[super]
+	:js /js/
+		toolbar.js
+
 #profile-menu
 	.btn-group.pull-right
 		%a.btn.dropdown-toggle
@@ -17,5 +21,6 @@
 
 #console-menu
 	.nav-collapse %ul.nav
-		%li.active %a[href=/console/index] Console
+		%li %a[href=/console/index] Console
+		%li %a[href=/apitest/index] API Test
 

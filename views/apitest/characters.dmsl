@@ -1,0 +1,21 @@
+:extends overlay.dmsl
+
+:include toolbar.dmsl
+:include apitest/sidebar.dmsl
+
+#content .span9
+	%table.table.table-hover
+		%thead
+			%tr
+				%th Name
+				%th Id
+				%th Corporation Name
+				%th Corporation Id
+		%tbody
+			{range .Characters}
+			%tr
+				%td {.Name}
+				%td {.CharacterId}
+				%td {.CorporationName}
+				%td {.CorporationId}
+			{end}
