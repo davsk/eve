@@ -7,10 +7,10 @@
 
 		%ul#package-list.nav.nav-list
 
-			{if .User.Data.apikeys}
+			{if .Data.APIKeys}
 			%select#select-api-key
-				{range .User.Data.apikeys}
-				%option[value={.id}] {.name}
+				{range .Data.APIKeys}
+				%option[value={.Id}] {.Name}
 				{end}
 			{else}
 			%p No API Keys Found

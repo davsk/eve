@@ -53,31 +53,29 @@
 			#apikeys.tab-pane
 				%form[action=/console/profile/apikeys][method=post]
 					.key-container
-						{if .User.Data}
-						{if .User.Data.apikeys}
-						{range .User.Data.apikeys}
+						{if .Data.APIKeys}
+						{range .Data.APIKeys}
 						%div
 							%div.pull-right %a.btn.btn-small.btn-danger.remove-key[href=#] Remove
 
 							%label[for=keyname] Name
-							%input[name=keyname][type=text][value={.name}]
+							%input[name=keyname][type=text][value={.Name}]
 							%label[for=keyid] Id
-							%input[name=keyid][type=text][value={.id}]
+							%input[name=keyid][type=text][value={.Id}]
 							%label[for=keycode] Verification Code
-							%input[name=keycode][type=text][value={.code}]
+							%input[name=keycode][type=text][value={.Code}]
 							%hr
-						{end}
 						{end}
 						{else}
 						%div
 							%div.pull-right %a.btn.remove-key[href=#] Remove
 
 							%label[for=keyname] Name
-							%input[name=keyname][type=text][value={.name}]
+							%input[name=keyname][type=text][value=]
 							%label[for=keyid] Id
-							%input[name=keyid][type=text][value={.id}]
+							%input[name=keyid][type=text][value=]
 							%label[for=keycode] Verification Code
-							%input[name=keycode][type=text][value={.code}]
+							%input[name=keycode][type=text][value=]
 							%hr
 						{end}
 

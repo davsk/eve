@@ -2,36 +2,22 @@ package main
 
 import (
 	"net/http"
-	"dasa.cc/dae"
+	"dasa.cc/dae/handler"
+	"dasa.cc/dae/datastore"
+	"dasa.cc/dae/context"
 	"dasa.cc/dae/user"
+	"dasa.cc/dae/render"
 	"labix.org/v2/mgo/bson"
 )
 
-func init() {
-	http.Handle("/console/profile", dae.NewHandler(dae.Auth, profile))
-	http.Handle("/console/profile/update", dae.NewHandler(dae.Auth, profileUpdate))
-	http.Handle("/console/profile/password", dae.NewHandler(dae.Auth, profilePassword))
-	http.Handle("/console/profile/apikeys", dae.Handler(dae.Auth).Add(apikeys))
-}
-
-type UserData struct {
-	ApiKeys []*APIKey
-}
-
-type APIKey struct {
-	Name string
-	Id string
-	Code string
-}
-
-func apikeys(w http.ResponseWriter, r *http.Request) *dae.Error {
+func apikeys(w http.ResponseWriter, r *http.Request) *handler.Error {
 	if err := r.ParseForm(); err != nil {
-		return dae.NewError(err, 500, "Error parsing form data")
+		return handler.NewError(err, 500, "Error parsing form data")
 	}
 
-	c := dae.NewContext(r)
+	c := context.New(r)
 
-	db := dae.NewDB()
+	db := datastore.New()
 	defer db.Close()
 
 	u := user.Current(c, db)
@@ -46,10 +32,16 @@ func apikeys(w http.ResponseWriter, r *http.Request) *dae.Error {
 		apiKeys = append(apiKeys, &APIKey{names[i], ids[i], codes[i]})
 	}
 
-	u.Data["apikeys"] = apiKeys
+	var data UserData
+	u.Data(&data)
+
+	data.APIKeys = apiKeys
+	if err := u.SetData(&data); err != nil {
+		return handler.NewError(err, 500, "Error setting user data")
+	}
 
 	if err := db.C("users").UpdateId(u.Id, u); err != nil {
-		return dae.NewError(err, 500, "Error saving api keys")
+		return handler.NewError(err, 500, "Error saving api keys")
 	}
 
 	c.Session().AddFlash("Changes saved.")
@@ -60,11 +52,11 @@ func apikeys(w http.ResponseWriter, r *http.Request) *dae.Error {
 	return nil
 }
 
-func profile(w http.ResponseWriter, r *http.Request) *dae.Error {
-	db := dae.NewDB()
+func profile(w http.ResponseWriter, r *http.Request) *handler.Error {
+	db := datastore.New()
 	defer db.Close()
 
-	c := dae.NewContext(r)
+	c := context.New(r)
 	u := user.Current(c, db)
 
 	errs := []string{}
@@ -80,16 +72,19 @@ func profile(w http.ResponseWriter, r *http.Request) *dae.Error {
 	}
 	c.Session().Save(r, w)
 
-	dae.Render(w, r, bson.M{"User": u, "Errors": errs, "Messages": msgs})
+	var data UserData
+	u.Data(&data)
+
+	render.Auto(w, r, bson.M{"User": u, "Data": data, "Errors": errs, "Messages": msgs})
 
 	return nil
 }
 
-func profileUpdate(w http.ResponseWriter, r *http.Request) *dae.Error {
-	db := dae.NewDB()
+func profileUpdate(w http.ResponseWriter, r *http.Request) *handler.Error {
+	db := datastore.New()
 	defer db.Close()
 
-	c := dae.NewContext(r)
+	c := context.New(r)
 	u := user.Current(c, db)
 
 	// TODO truncate?
@@ -100,7 +95,7 @@ func profileUpdate(w http.ResponseWriter, r *http.Request) *dae.Error {
 	}
 
 	if err := db.C("users").UpdateId(u.Id, u); err != nil {
-		return dae.NewError(err, 500, "Error updating user profile")
+		return handler.NewError(err, 500, "Error updating user profile")
 	}
 
 	c.Session().AddFlash("Changes saved.")
@@ -110,16 +105,16 @@ func profileUpdate(w http.ResponseWriter, r *http.Request) *dae.Error {
 	return nil
 }
 
-func profilePassword(w http.ResponseWriter, r *http.Request) *dae.Error {
+func profilePassword(w http.ResponseWriter, r *http.Request) *handler.Error {
 
 	// redirect on return
 	defer http.Redirect(w, r, "/console/profile", http.StatusFound)
 
 	// setup env
-	db := dae.NewDB()
+	db := datastore.New()
 	defer db.Close()
 
-	c := dae.NewContext(r)
+	c := context.New(r)
 	defer c.Session().Save(r, w)
 
 	u := user.Current(c, db)
@@ -137,11 +132,16 @@ func profilePassword(w http.ResponseWriter, r *http.Request) *dae.Error {
 
 	u.SetPassword(newPass)
 	if err := db.C("users").UpdateId(u.Id, u); err != nil {
-		return dae.NewError(err, 500, "Error updating user password!")
+		return handler.NewError(err, 500, "Error updating user password!")
 	}
 
 	c.Session().AddFlash("Changes saved.")
 	return nil
 }
 
-
+func init() {
+	http.Handle("/console/profile", handler.New(handler.Auth, profile))
+	http.Handle("/console/profile/update", handler.New(handler.Auth, profileUpdate))
+	http.Handle("/console/profile/password", handler.New(handler.Auth, profilePassword))
+	http.Handle("/console/profile/apikeys", handler.Handler(handler.Auth).Add(apikeys))
+}
