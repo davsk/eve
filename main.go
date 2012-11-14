@@ -33,7 +33,7 @@ func main() {
 
 func init() {
 	render.Cache = false
-	handler.Debug = true
+	handler.Debug = false
 
 	datastore.DBHost = "localhost"
 	datastore.DBName = "eve"

@@ -53,7 +53,7 @@ func apitestCharacters(w http.ResponseWriter, r *http.Request) *handler.Error {
 		chars = api.GetCharacters(apikey.Id, apikey.Code)
 	}
 
-	render.Auto(w, r, bson.M{"User": u, "Characters": chars})
+	render.Auto(w, r, bson.M{"User": u, "Data": data, "Characters": chars})
 
 	return nil
 }
@@ -65,7 +65,10 @@ func apitestStatus(w http.ResponseWriter, r *http.Request) *handler.Error {
 	c := context.New(r)
 	u := user.Current(c, db)
 
-	render.Auto(w, r, bson.M{"User": u})
+	var data UserData
+	u.Data(&data)
+
+	render.Auto(w, r, bson.M{"User": u, "Data": data})
 
 	return nil
 }
