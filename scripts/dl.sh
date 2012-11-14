@@ -2,7 +2,7 @@
 
 function load {
 	gzip -d tmp/*.gz
-	ls tmp/*.txt | awk '{print "./convert.sh " $1 " > " $1 ".new; mv " $1 ".new " $1 ";psql eve -f " $1}' | sh
+	ls tmp/*.txt | awk '{print "./convert.awk "$1" > "$1".new; mv "$1".new "$1";psql eve -f "$1}' | sh
 
 	# debug
 	#ls tmp/*.txt | awk '{print "./convert.sh " $1 " > " $1 ".new"}' | sh
@@ -34,10 +34,13 @@ wget -P tmp http://eve-marketdata.com/developers/mysql_eve_inv_types.txt.gz
 wget -P tmp http://eve-marketdata.com/developers/mysql_items_buying.txt.gz
 wget -P tmp http://eve-marketdata.com/developers/mysql_items_selling.txt.gz
 wget -P tmp http://eve-marketdata.com/developers/mysql_station_rank.txt.gz
-#wget -P tmp http://eve-marketdata.com/developers/mysql_items_history.txt.gz
 wget -P tmp http://eve-marketdata.com/developers/mysql_region_type_updates.txt.gz
 wget -P tmp http://eve-marketdata.com/developers/mysql_region_type_hist_updates.txt.gz
 
 load
+
+wget -P tmp http://eve-marketdata.com/developers/mysql_items_history.txt.gz
+gzip -d tmp/*.gz
+ls tmp/*.txt | awk '{print "./convert.awk "$1" > "$1".new; mv "$1".new "$1"; ./psql-split.sh "$1}'
 
 rmdir tmp

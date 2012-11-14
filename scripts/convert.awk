@@ -1,16 +1,20 @@
-# gawk
+#! /usr/bin/gawk -f
 
 BEGIN {
 	IGNORECASE = 1 # gawkism
 	print "begin transaction;"
 }
 
+{
+	gsub("\r$", "") # dos2unix
+}
+
 # skip comments
 /^#/ || /^--/ || /^(un)?lock/ || /^$/ || /^[ \t]*$/ || /\/\*.*\*\// || /^([\( ])?partition/ { next }
 
 {
-	gsub(/`/, "")
-	gsub(/'0000-00-00 00:00:00'/, "'-infinity'::timestamp")
+	gsub(/`/, "") # remove backticks around system identifiers
+	gsub(/'0000-00-00 00:00:00'/, "'-infinity'::timestamp") # cast zero'd timestamp value on table defs, inserts, etc
 }
 
 /^drop / {
@@ -52,7 +56,7 @@ BEGIN {
 	next
 }
 
-# create indexes after table creation
+# store indexes for creation later
 /^[ \t]*key/ {
 	if (match($0, /^[ \t]*key .*\(/)) indexName = substr($0, RSTART+6, RLENGTH-7)
 	if (match($0, /\(.*\)/)) indexKey = substr($0, RSTART+1, RLENGTH-2)
