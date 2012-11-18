@@ -1,0 +1,23 @@
+:extends overlay.dmsl
+
+:include toolbar.dmsl
+
+#content
+	.span3
+
+		.accordion#tables
+
+			{range $name, $columns := .Tables}
+			.accordion-group
+				.accordion-heading
+					%a.accordion-toggle[data-toggle=collapse][data-parent="#tables"][href="#{$name}"]
+						{$name}
+				.accordion-body.collapse[id="{$name}"]
+					.accordion-inner
+						{range $columns}
+						%div {.}
+						{end}
+
+			{end}
+
+	.span9

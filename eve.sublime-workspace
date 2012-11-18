@@ -3,26 +3,19 @@
 	{
 		"selected_items":
 		[
+			[
+				"Pr",
+				"Println	n int, err error ƒ"
+			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "main.go",
+			"file": "apitest.go",
 			"settings":
 			{
-				"buffer_size": 814,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "package main\n\nimport (\n	\"dasa.cc/dae/handler\"\n	\"net/http\"\n)\n\nfunc index(w http.ResponseWriter, r *http.Request) *handler.Error {\n	http.Redirect(w, r, \"/login\", http.StatusFound)\n	return nil\n}\n\nfunc init() {\n	fmt.Pr\n	http.Handle(\"/\", handler.New(index))\n}\n",
-			"file": "home.go",
-			"file_size": 247,
-			"file_write_time": 1352757402000000,
-			"settings":
-			{
-				"buffer_size": 255,
+				"buffer_size": 1510,
 				"line_ending": "Unix"
 			}
 		}
@@ -30,9 +23,73 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 52.0,
+		"height": 152.0,
 		"selected_items":
 		[
+			[
+				"xik",
+				"Create Xiki Buffer"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"side",
+				"View: Toggle Side Bar"
+			],
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				":fmt",
+				"GoSublime: Fmt and save"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				":graph",
+				"Git: Graph Current File"
+			],
+			[
+				":dif",
+				"Git: Diff Current File"
+			],
+			[
+				"git diff",
+				"Git: Diff All"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"GoSublime: test",
+				"GoSublime: Run Tests"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"go build",
+				"GoSublime: Open shell/build prompt"
+			],
+			[
+				"git bl",
+				"Git: Blame"
+			],
+			[
+				"git stat",
+				"Git: Status"
+			],
+			[
+				"gosublime:",
+				"GoSublime: Go to imports section"
+			],
 			[
 				"gosu install",
 				"GoSublime: Install/Update MarGo and Gocode"
@@ -46,10 +103,6 @@
 				"GoSublime: Install/Update MarGo and Gocode"
 			],
 			[
-				"instal",
-				"Package Control: Install Package"
-			],
-			[
 				"package con",
 				"Package Control: Install Package"
 			]
@@ -58,7 +111,7 @@
 	},
 	"console":
 	{
-		"height": 125.0
+		"height": 141.0
 	},
 	"distraction_free":
 	{
@@ -71,12 +124,30 @@
 	},
 	"file_history":
 	[
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/api/characters.go",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/api/characters_test.go",
+		"/home/daniel/workspace/me/go/src/dasa.cc/dae/context/context.go",
+		"/home/daniel/local/go/src/pkg/builtin/builtin.go",
 		"/home/daniel/workspace/me/go/src/dasa.cc/eve/main.go",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/analysis/dailyblueprintselection.go",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/analysis/dailyblueprintselection_test.go",
+		"/home/daniel/.config/sublime-text-2/Packages/GoSublime/CHANGELOG.md",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/apitest.go",
+		"/home/daniel/.config/sublime-text-2/Packages/User/GoSublime.sublime-settings",
+		"/home/daniel/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/daniel/.config/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/eve.sublime-workspace",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/home.go",
+		"/home/daniel/.config/sublime-text-2/Packages/Git/Git.sublime-settings",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/api/api.go",
+		"/home/daniel/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/home/daniel/.config/sublime-text-2/Packages/GoSublime/GoSublime.sublime-settings",
+		"/home/daniel/workspace/me/go/src/dasa.cc/eve/eve.sublime-project",
 		"/home/daniel/workspace/me/go/src/dasa.cc/apkbot/main.go"
 	],
 	"find":
 	{
-		"height": 0.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -90,6 +161,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"db",
+			"	 ",
+			"db",
+			"dasa",
+			"dae"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -107,23 +183,23 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "main.go",
+					"file": "apitest.go",
 					"settings":
 					{
-						"buffer_size": 814,
+						"buffer_size": 1510,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								588,
+								588
 							]
 						],
 						"settings":
@@ -132,34 +208,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "home.go",
-					"settings":
-					{
-						"buffer_size": 255,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								255,
-								255
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Go/Go.tmLanguage",
-							"tab_size": 2
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 346.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -169,11 +218,11 @@
 	],
 	"incremental_find":
 	{
-		"height": 0.0
+		"height": 34.0
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{
@@ -198,6 +247,14 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 232.0
+	},
+	"output.gscommander:///home/daniel/workspace/me/go/src/dasa.cc/eve":
+	{
+		"height": 100.0
+	},
 	"replace":
 	{
 		"height": 0.0
@@ -208,6 +265,14 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"chtes",
+				"api/characters_test.go"
+			],
+			[
+				"cha",
+				"api/characters.go"
+			]
 		],
 		"width": 0.0
 	},
@@ -223,6 +288,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 190.0,
+	"side_bar_width": 282.0,
 	"status_bar_visible": true
 }

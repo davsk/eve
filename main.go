@@ -2,10 +2,10 @@ package main
 
 import (
 	"dasa.cc/dae"
-	"dasa.cc/dae/handler"
 	"dasa.cc/dae/datastore"
-	"dasa.cc/dae/user"
+	"dasa.cc/dae/handler"
 	"dasa.cc/dae/render"
+	"dasa.cc/dae/user"
 	"flag"
 	"log"
 	"net/http"
@@ -38,7 +38,7 @@ func init() {
 	datastore.DBHost = "localhost"
 	datastore.DBName = "eve"
 
-	user.LoginSuccessURL = "/console/index"
+	user.LoginSuccessURL = "/console/"
 
 	dae.RegisterFileServer("res/")
 	user.RegisterHandlers()

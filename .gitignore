@@ -2,3 +2,5 @@ eve
 tags
 *.swo
 *.swp
+*.sublime*
+*.xiki

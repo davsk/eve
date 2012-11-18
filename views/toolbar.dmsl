@@ -22,5 +22,6 @@
 #console-menu
 	.nav-collapse %ul.nav
 		%li %a[href=/console/index] Console
-		%li %a[href=/apitest/index] API Test
+		%li %a[href=/eveapi/] EVE API
+		%li %a[href=/market/] Market
 

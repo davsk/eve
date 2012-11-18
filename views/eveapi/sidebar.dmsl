@@ -1,6 +1,6 @@
 #head[super]
 	:js /js/
-		apitest/sidebar.js
+		eveapi/sidebar.js
 
 #sidebar
 	.span3 .well.sidebar-nav[style="padding-left: 0px !important; padding-right: 0px !important;"]
@@ -8,17 +8,18 @@
 		%ul#package-list.nav.nav-list
 
 			{if .Data.APIKeys}
+			{$active := .Data.ActiveKeyId}
 			%select#select-api-key
 				{range .Data.APIKeys}
-				%option[value={.Id}] {.Name}
+				%option[value={.Id}]{if StrEq .Id $active}[selected=selected]{end} {.Name}
 				{end}
 			{else}
 			%p No API Keys Found
 			{end}
 
 			%li.nav-header Account
-			%li %a[href=/apitest/characters] Characters
-			%li %a[href=/apitest/status] Status
+			%li %a[href=/eveapi/characters] Characters
+			%li %a[href=/eveapi/status] Status
 
 			%li.divider
 

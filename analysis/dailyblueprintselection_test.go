@@ -1,11 +1,10 @@
 package analysis
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
-
-TestPrinting(t *testing.T) {
+func TestPrinting(t *testing.T) {
 	fmt.Println("hello world")
 }

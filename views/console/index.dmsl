@@ -1,6 +1,5 @@
 :extends overlay.dmsl
 
-{$toolbarActive := "console"}
 :include toolbar.dmsl
 
 #content

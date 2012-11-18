@@ -1,8 +1,8 @@
 package api
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestCharactersParse(t *testing.T) {

@@ -1,6 +1,6 @@
 :extends overlay.dmsl
 
 :include toolbar.dmsl
-:include apitest/sidebar.dmsl
+:include eveapi/sidebar.dmsl
 
 #content

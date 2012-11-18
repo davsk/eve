@@ -1,8 +1,0 @@
-:extends overlay.dmsl
-
-{$toolbarActive := "apitest"}
-:include toolbar.dmsl
-
-:include apitest/sidebar.dmsl
-
-#content Hi

@@ -1,0 +1,19 @@
+:extends overlay.dmsl
+
+:include toolbar.dmsl
+:include eveapi/sidebar.dmsl
+
+#content .span9
+
+	%dl.dl-horizontal
+		%dt Paid Until
+		%dd {.Status.PaidUntil}
+		
+		%dt Create Date
+		%dd {.Status.CreateDate}
+
+		%dt Logon Count
+		%dd {.Status.LogonCount}
+
+		%dt Logon Minutes
+		%dd {.Status.LogonMinutes}

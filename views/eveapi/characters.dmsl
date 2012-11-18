@@ -1,7 +1,7 @@
 :extends overlay.dmsl
 
 :include toolbar.dmsl
-:include apitest/sidebar.dmsl
+:include eveapi/sidebar.dmsl
 
 #content .span9
 	%table.table.table-hover

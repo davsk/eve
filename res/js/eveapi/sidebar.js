@@ -8,7 +8,9 @@ $(function() {
 	});
 
 	$("#select-api-key").on("change", function() {
-		window.location = window.location;
+		$.post('/eveapi/setactive', {id: $(this).val()}, function() {
+			window.location = window.location;
+		});
 	});
 
 });

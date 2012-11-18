@@ -1,6 +1,5 @@
 :extends overlay.dmsl
 
-{$toolbarActive := "profile"}
 :include toolbar.dmsl
 
 #head[super]

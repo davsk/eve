@@ -22,5 +22,5 @@ func console(w http.ResponseWriter, r *http.Request) *handler.Error {
 }
 
 func init() {
-	http.Handle("/console/index", handler.New(handler.Auth, console))
+	http.Handle("/console/", handler.New(handler.Auth, console))
 }
