@@ -11,14 +11,8 @@ import (
 	"net/http"
 )
 
-type APIKey struct {
-	Name string
-	Id   string
-	Code string
-}
-
 type UserData struct {
-	APIKeys []*APIKey
+	APIKeys     []*api.APIKey
 	ActiveKeyId string
 }
 

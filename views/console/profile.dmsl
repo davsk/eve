@@ -54,8 +54,13 @@
 					.key-container
 						{if .Data.APIKeys}
 						{range .Data.APIKeys}
+
 						%div
 							%div.pull-right %a.btn.btn-small.btn-danger.remove-key[href=#] Remove
+
+							{if not .Info}
+							%span.label.label-important Not Validated
+							{end}
 
 							%label[for=keyname] Name
 							%input[name=keyname][type=text][value={.Name}]
@@ -63,6 +68,10 @@
 							%input[name=keyid][type=text][value={.Id}]
 							%label[for=keycode] Verification Code
 							%input[name=keycode][type=text][value={.Code}]
+
+							{if .Info}
+							%div {.Info.AccessMask}
+							{end}
 							%hr
 						{end}
 						{else}

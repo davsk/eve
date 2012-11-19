@@ -14,6 +14,13 @@ const (
 
 var dateMatcher *regexp.Regexp
 
+type APIKey struct {
+	Name  string
+	Id    string
+	Code  string
+	Info  *APIKeyInfo
+}
+
 // DateReplace matches dates in the given src and formats them in a manner that will
 // be recognized by xml.Unmarshal
 // 
@@ -45,7 +52,7 @@ func Call(url string) []byte {
 	if resp.StatusCode != http.StatusOK {
 		panic(string(body))
 	}
-
+	
 	return DateReplace(body)
 }
 
