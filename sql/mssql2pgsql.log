@@ -1,0 +1,10 @@
+mssql2pgsql.log
+
+change tinyint to smallint
+change float to real
+change valuereal back to valueFloat
+change nvarchar( to varchar(
+change word GO to ;
+change (' to (
+change ') to )
+
