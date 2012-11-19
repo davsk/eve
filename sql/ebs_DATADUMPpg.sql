@@ -303,110 +303,109 @@
 
 -- TRANSLATIONS
 -- trnTranslations
-IF OBJECT_ID (dbo.trnTranslations) IS NOT NULL
-  DROP TABLE dbo.trnTranslations
-;
+--IF OBJECT_ID (dbo.trnTranslations) IS NOT NULL
+--  DROP TABLE dbo.trnTranslations
+
 CREATE TABLE dbo.trnTranslations
 (
   tcID        smallint       NOT NULL,
   keyID       int            NOT NULL,
   languageID  varchar(50)    NOT NULL,
-  [text]      varchar(max)  NOT NULL,
+  [text]      text  NOT NULL,
   
-  CONSTRAINT trnTranslations_PK PRIMARY KEY CLUSTERED(tcID, keyID, languageID)
+  CONSTRAINT trnTranslations_PK PRIMARY KEY (tcID, keyID, languageID)
 )
 ;
 
 -- trnTranslationColumns
-IF OBJECT_ID ('dbo.trnTranslationColumns) IS NOT NULL
-  DROP TABLE dbo.trnTranslationColumns
-;
+--IF OBJECT_ID (dbo.trnTranslationColumns) IS NOT NULL
+--  DROP TABLE dbo.trnTranslationColumns
 CREATE TABLE dbo.trnTranslationColumns
 (
   tcGroupID      smallint       NULL,
   tcID           smallint       NOT NULL,
-  tableName      varchar(256)  NOT NULL,
+  tableName      text  NOT NULL,
   columnName     varchar(128)  NOT NULL,
   masterID       varchar(128)  NULL,
 
-  CONSTRAINT translationColumns_PK PRIMARY KEY CLUSTERED (tcID)
+  CONSTRAINT translationColumns_PK PRIMARY KEY  (tcID)
 )
 ;
 
 -- translationLaguages
-IF OBJECT_ID(dbo.trnTranslationLanguages) IS NOT NULL
-  DROP TABLE dbo.trnTranslationLanguages
-;
+--IF OBJECT_ID(dbo.trnTranslationLanguages) IS NOT NULL
+--  DROP TABLE dbo.trnTranslationLanguages
+
 CREATE TABLE dbo.trnTranslationLanguages
 (
     numericLanguageID   int            NOT NULL,
     languageID          varchar(50)    NULL,
     languageName        varchar(200)  NULL,
     
-    CONSTRAINT trnTranslationLanguages_PK PRIMARY KEY CLUSTERED (numericLanguageID) 
+    CONSTRAINT trnTranslationLanguages_PK PRIMARY KEY  (numericLanguageID) 
 )
 ;
 
 
 -- CERTIFICATES
 -- Certificate Categories
-IF OBJECT_ID ('dbo.crtCategories) IS NOT NULL
-  DROP TABLE dbo.crtCategories
-;
+--IF OBJECT_ID (dbo.crtCategories) IS NOT NULL
+--  DROP TABLE dbo.crtCategories
+
 CREATE TABLE dbo.crtCategories
 (
   categoryID   smallint,
-  description  varchar(500),
-  categoryName varchar(256),
+  description  text,
+  categoryName text,
   
-  CONSTRAINT crtCategories_PK PRIMARY KEY CLUSTERED (categoryID)
+  CONSTRAINT crtCategories_PK PRIMARY KEY  (categoryID)
 )
 ;
 
 -- Certificate classes (groups)
-IF OBJECT_ID ('dbo.crtClasses) IS NOT NULL
-  DROP TABLE dbo.crtClasses
-;
+--IF OBJECT_ID (dbo.crtClasses) IS NOT NULL
+--  DROP TABLE dbo.crtClasses
+
 CREATE TABLE dbo.crtClasses
 (
   classID      int,
-  description  varchar(500),
-  className    varchar(256),
+  description  text,
+  className    text,
   
-  CONSTRAINT crtClasses_PK PRIMARY KEY CLUSTERED (classID)
+  CONSTRAINT crtClasses_PK PRIMARY KEY  (classID)
 )
 ;
 
 
 -- planet schematics tables
-IF OBJECT_ID ('dbo.planetSchematics) IS NOT NULL
-  DROP TABLE dbo.planetSchematics
-;
+--IF OBJECT_ID (dbo.planetSchematics) IS NOT NULL
+--  DROP TABLE dbo.planetSchematics
+
 CREATE TABLE dbo.planetSchematics
 (
   schematicID     smallint,
-  schematicName   varchar(255),
+  schematicName   text,
   cycleTime       int,
 
-  CONSTRAINT planetSchematics_PK PRIMARY KEY CLUSTERED (schematicID)
+  CONSTRAINT planetSchematics_PK PRIMARY KEY  (schematicID)
 )
 ;
 
-IF OBJECT_ID ('dbo.planetSchematicsPinMap) IS NOT NULL
-  DROP TABLE dbo.planetSchematicsPinMap
-;
+--IF OBJECT_ID (dbo.planetSchematicsPinMap) IS NOT NULL
+--  DROP TABLE dbo.planetSchematicsPinMap
+
 CREATE TABLE dbo.planetSchematicsPinMap
 (
   schematicID     smallint,
   pinTypeID       int,
 
-  CONSTRAINT planetSchematicsPinMap_PK PRIMARY KEY CLUSTERED (schematicID, pinTypeID)
+  CONSTRAINT planetSchematicsPinMap_PK PRIMARY KEY  (schematicID, pinTypeID)
 )
 ;
 
-IF OBJECT_ID ('dbo.planetSchematicsTypeMap) IS NOT NULL
-  DROP TABLE dbo.planetSchematicsTypeMap
-;
+--IF OBJECT_ID (dbo.planetSchematicsTypeMap) IS NOT NULL
+--  DROP TABLE dbo.planetSchematicsTypeMap
+
 CREATE TABLE dbo.planetSchematicsTypeMap
 (
   schematicID     smallint,
@@ -414,7 +413,7 @@ CREATE TABLE dbo.planetSchematicsTypeMap
   quantity        smallint,
   isInput         bit,
 
-  CONSTRAINT planetSchematicsTypeMap_PK PRIMARY KEY CLUSTERED (schematicID, typeID)
+  CONSTRAINT planetSchematicsTypeMap_PK PRIMARY KEY  (schematicID, typeID)
 )
 ;
 
@@ -424,9 +423,9 @@ CREATE TABLE dbo.planetSchematicsTypeMap
 -- ParentTypeID = Required skill typeID
   -- parentLevel = Level of skill (parentTypeID) required
 -- childID = CertificateID of certificates requiring this certificate
-IF OBJECT_ID ('dbo.crtRelationships) IS NOT NULL
-  DROP TABLE dbo.crtRelationships
-;
+--IF OBJECT_ID (dbo.crtRelationships) IS NOT NULL
+--  DROP TABLE dbo.crtRelationships
+
 CREATE TABLE dbo.crtRelationships
 (
   relationshipID    int,
@@ -435,17 +434,17 @@ CREATE TABLE dbo.crtRelationships
   parentLevel       smallint,
   childID           int,
 
-  CONSTRAINT crtRelationships_relationship PRIMARY KEY CLUSTERED (relationshipID)
+  CONSTRAINT crtRelationships_relationship PRIMARY KEY  (relationshipID)
 )
-CREATE NONCLUSTERED INDEX crtRelationships_IX_parent ON dbo.crtRelationships(parentID)
-CREATE NONCLUSTERED INDEX crtRelationships_IX_child ON dbo.crtRelationships(childID)
+CREATE  INDEX crtRelationships_IX_parent ON dbo.crtRelationships(parentID)
+CREATE  INDEX crtRelationships_IX_child ON dbo.crtRelationships(childID)
 ;
 
 -- Certificates
 -- Grade = Certificate level
-IF OBJECT_ID ('dbo.crtCertificates) IS NOT NULL
-  DROP TABLE dbo.crtCertificates
-;
+--IF OBJECT_ID (dbo.crtCertificates) IS NOT NULL
+--  DROP TABLE dbo.crtCertificates
+
 CREATE TABLE dbo.crtCertificates
 (
   certificateID       int,
@@ -454,19 +453,19 @@ CREATE TABLE dbo.crtCertificates
   grade               smallint,
   corpID              int,
   iconID              int,
-  description         varchar(500),
+  description         text,
 
-  CONSTRAINT crtCertificates_PK PRIMARY KEY CLUSTERED (certificateID)
+  CONSTRAINT crtCertificates_PK PRIMARY KEY  (certificateID)
 )
-CREATE NONCLUSTERED INDEX crtCertificates_IX_category ON dbo.crtCertificates(categoryID)
-CREATE NONCLUSTERED INDEX crtCertificates_IX_class ON dbo.crtCertificates(classID)
+CREATE  INDEX crtCertificates_IX_category ON dbo.crtCertificates(categoryID)
+CREATE  INDEX crtCertificates_IX_class ON dbo.crtCertificates(classID)
 ;
 
 -- Certificate Reccomendations
 
-IF OBJECT_ID(dbo.crtRecommendations) IS NOT NULL
-  DROP TABLE dbo.crtRecommendations
-;
+--IF OBJECT_ID(dbo.crtRecommendations) IS NOT NULL
+--  DROP TABLE dbo.crtRecommendations
+
 CREATE TABLE dbo.crtRecommendations
 (
   recommendationID      int       NOT NULL,
@@ -474,18 +473,18 @@ CREATE TABLE dbo.crtRecommendations
   certificateID         int       NULL,
   recommendationLevel   smallint   NOT NULL DEFAULT(0),
   
-  CONSTRAINT crtRecommendations_PK PRIMARY KEY CLUSTERED (recommendationID)
+  CONSTRAINT crtRecommendations_PK PRIMARY KEY  (recommendationID)
 )
-CREATE NONCLUSTERED INDEX crtRecommendations_IX_shipType ON crtRecommendations (shipTypeID)
-CREATE NONCLUSTERED INDEX crtRecommendations_IX_certificate ON crtRecommendations (certificateID)
+CREATE  INDEX crtRecommendations_IX_shipType ON crtRecommendations (shipTypeID)
+CREATE  INDEX crtRecommendations_IX_certificate ON crtRecommendations (certificateID)
 ;
 
 
 -- AGENTS
 -- Agents
-IF OBJECT_ID(dbo.agtAgents) IS NOT NULL
-  DROP TABLE dbo.agtAgents
-;
+--IF OBJECT_ID(dbo.agtAgents) IS NOT NULL
+--  DROP TABLE dbo.agtAgents
+
 CREATE TABLE dbo.agtAgents
 (
   agentID        int,
@@ -497,37 +496,37 @@ CREATE TABLE dbo.agtAgents
   agentTypeID    int,
   isLocator      bit,
 
-  CONSTRAINT agtAgents_PK PRIMARY KEY CLUSTERED (agentID)
+  CONSTRAINT agtAgents_PK PRIMARY KEY  (agentID)
 )
-CREATE NONCLUSTERED INDEX agtAgents_IX_corporation ON agtAgents (corporationID)
-CREATE NONCLUSTERED INDEX agtAgents_IX_station ON agtAgents (locationID)
+CREATE  INDEX agtAgents_IX_corporation ON agtAgents (corporationID)
+CREATE  INDEX agtAgents_IX_station ON agtAgents (locationID)
 ;
 
 -- Research agents and their fields
 -- This is new. If agent has a science skill it can research that field.
-IF OBJECT_ID(dbo.agtResearchAgents) IS NOT NULL
-  DROP TABLE dbo.agtResearchAgents
-;
+--IF OBJECT_ID(dbo.agtResearchAgents) IS NOT NULL
+--  DROP TABLE dbo.agtResearchAgents
+
 CREATE TABLE dbo.agtResearchAgents
 (
   agentID      int,
   typeID       int,
 
-  CONSTRAINT agtResearchAgents_PK PRIMARY KEY CLUSTERED (agentID, typeID)
+  CONSTRAINT agtResearchAgents_PK PRIMARY KEY  (agentID, typeID)
 )
-CREATE NONCLUSTERED INDEX agtResearchAgents_IX_type ON dbo.agtResearchAgents (typeID)
+CREATE  INDEX agtResearchAgents_IX_type ON dbo.agtResearchAgents (typeID)
 ;
 
 -- Agent Types
-IF OBJECT_ID(dbo.agtAgentTypes) IS NOT NULL
-  DROP TABLE dbo.agtAgentTypes
-;
+--IF OBJECT_ID(dbo.agtAgentTypes) IS NOT NULL
+--  DROP TABLE dbo.agtAgentTypes
+
 CREATE TABLE dbo.agtAgentTypes
 (
   agentTypeID  int,
   agentType    varchar(50),
   
-  CONSTRAINT agtAgentTypes_PK PRIMARY KEY CLUSTERED (agentTypeID)
+  CONSTRAINT agtAgentTypes_PK PRIMARY KEY  (agentTypeID)
 )
 ;
 
@@ -535,56 +534,56 @@ CREATE TABLE dbo.agtAgentTypes
 -- CHARACTER
 -- Character creation relevant tables.
 -- Ancestries
-IF OBJECT_ID(dbo.chrAncestries) IS NOT NULL
-  DROP TABLE dbo.chrAncestries
-;
+--IF OBJECT_ID(dbo.chrAncestries) IS NOT NULL
+--  DROP TABLE dbo.chrAncestries
+
 CREATE TABLE dbo.chrAncestries
 (
   ancestryID        smallint,
   ancestryName      varchar(100),
   bloodlineID       smallint,
-  description       varchar(1000),
+  description       text,
   perception        smallint,
   willpower         smallint,
   charisma          smallint,
   memory            smallint,
   intelligence      smallint,
   iconID            int,
-  shortDescription  varchar(500),
+  shortDescription  text,
 
-  CONSTRAINT chrAncestries_PK PRIMARY KEY CLUSTERED (ancestryID)
+  CONSTRAINT chrAncestries_PK PRIMARY KEY  (ancestryID)
 )
 ;
 
 -- Attributes
-IF OBJECT_ID(dbo.chrAttributes) IS NOT NULL
-  DROP TABLE dbo.chrAttributes
-;
+--IF OBJECT_ID(dbo.chrAttributes) IS NOT NULL
+--  DROP TABLE dbo.chrAttributes
+
 CREATE TABLE dbo.chrAttributes
 (
   attributeID       smallint,
   attributeName     varchar(100),
-  description       varchar(1000),
+  description       text,
   iconID            int,
-  shortDescription  varchar(500),
-  notes             varchar(500),
+  shortDescription  text,
+  notes             text,
 
-  CONSTRAINT chrAttributes_PK PRIMARY KEY CLUSTERED (attributeID)
+  CONSTRAINT chrAttributes_PK PRIMARY KEY  (attributeID)
 )
 ;
 
 -- Bloodlines
-IF OBJECT_ID(dbo.chrBloodlines) IS NOT NULL
-  DROP TABLE dbo.chrBloodlines
-;
+--IF OBJECT_ID(dbo.chrBloodlines) IS NOT NULL
+--  DROP TABLE dbo.chrBloodlines
+
 CREATE TABLE dbo.chrBloodlines
 (
   bloodlineID             smallint,
   bloodlineName           varchar(100),
   raceID                  smallint,
-  description             varchar(1000),
-  maleDescription         varchar(1000),
-  femaleDescription       varchar(1000),
+  description             text,
+  maleDescription         text,
+  femaleDescription       text,
   shipTypeID              int,
   corporationID           int,
 
@@ -596,23 +595,23 @@ CREATE TABLE dbo.chrBloodlines
 
   iconID                  int,       
 
-  shortDescription        varchar(500),
-  shortMaleDescription    varchar(500),
-  shortFemaleDescription  varchar(500),
+  shortDescription        text,
+  shortMaleDescription    text,
+  shortFemaleDescription  text,
 
-  CONSTRAINT chrBloodlines_PK PRIMARY KEY CLUSTERED (bloodlineID)
+  CONSTRAINT chrBloodlines_PK PRIMARY KEY  (bloodlineID)
 )
 ;
 
 -- Factions
-IF OBJECT_ID(dbo.chrFactions) IS NOT NULL
-  DROP TABLE dbo.chrFactions
-;
+--IF OBJECT_ID(dbo.chrFactions) IS NOT NULL
+--  DROP TABLE dbo.chrFactions
+
 CREATE TABLE dbo.chrFactions
 (
   factionID             int,
   factionName           varchar(100),
-  description           varchar(1000),
+  description           text,
   raceIDs               int,
   solarSystemID         int,
   corporationID         int,
@@ -622,75 +621,75 @@ CREATE TABLE dbo.chrFactions
   militiaCorporationID  int,
   iconID                int,
 
-  CONSTRAINT chrFactions_PK PRIMARY KEY CLUSTERED (factionID)
+  CONSTRAINT chrFactions_PK PRIMARY KEY  (factionID)
 )
 ;
 
 -- Races
-IF OBJECT_ID(dbo.chrRaces) IS NOT NULL
-  DROP TABLE dbo.chrRaces
-;
+--IF OBJECT_ID(dbo.chrRaces) IS NOT NULL
+--  DROP TABLE dbo.chrRaces
+
 CREATE TABLE dbo.chrRaces
 (
   raceID            smallint,
   raceName          varchar(100),
-  description       varchar(1000),
+  description       text,
   iconID            int,
-  shortDescription  varchar(500),
+  shortDescription  text,
 
-  CONSTRAINT chrRaces_PK PRIMARY KEY CLUSTERED (raceID)  
+  CONSTRAINT chrRaces_PK PRIMARY KEY  (raceID)  
 )
 ;
 
 -- CORPORATIONS
 -- Activities
-IF OBJECT_ID(dbo.crpActivities) IS NOT NULL
-  DROP TABLE dbo.crpActivities
-;
+--IF OBJECT_ID(dbo.crpActivities) IS NOT NULL
+--  DROP TABLE dbo.crpActivities
+
 CREATE TABLE dbo.crpActivities
 (
   activityID      smallint,
   activityName    varchar(100),
-  description     varchar(1000),
+  description     text,
 
-  CONSTRAINT crpActivities_PK PRIMARY KEY CLUSTERED (activityID)
+  CONSTRAINT crpActivities_PK PRIMARY KEY  (activityID)
 )
 ;
 
 
 -- crpNPCCorporationDivisions
-IF OBJECT_ID(dbo.crpNPCCorporationDivisions) IS NOT NULL
-  DROP TABLE dbo.crpNPCCorporationDivisions
-;
+--IF OBJECT_ID(dbo.crpNPCCorporationDivisions) IS NOT NULL
+--  DROP TABLE dbo.crpNPCCorporationDivisions
+
 CREATE TABLE dbo.crpNPCCorporationDivisions
 (
   corporationID   int,
   divisionID      smallint,
   [size]          smallint,
 
-  CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY CLUSTERED (corporationID, divisionID)
+  CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (corporationID, divisionID)
 )
 ;
 
 
 -- Research Fields
-IF OBJECT_ID(dbo.crpNPCCorporationResearchFields) IS NOT NULL
-  DROP TABLE dbo.crpNPCCorporationResearchFields
-;
+--IF OBJECT_ID(dbo.crpNPCCorporationResearchFields) IS NOT NULL
+--  DROP TABLE dbo.crpNPCCorporationResearchFields
+
 CREATE TABLE dbo.crpNPCCorporationResearchFields
 (
   skillID        int,
   corporationID  int,
 
-  CONSTRAINT crpNPCCorporationResearchFields_PK PRIMARY KEY CLUSTERED (skillID, corporationID)
+  CONSTRAINT crpNPCCorporationResearchFields_PK PRIMARY KEY  (skillID, corporationID)
 )
 ;
 
 
 -- NPCCorporations
-IF OBJECT_ID(dbo.crpNPCCorporations) IS NOT NULL
-  DROP TABLE dbo.crpNPCCorporations
-;
+--IF OBJECT_ID(dbo.crpNPCCorporations) IS NOT NULL
+--  DROP TABLE dbo.crpNPCCorporations
+
 CREATE TABLE dbo.crpNPCCorporations
 (
   corporationID        int,
@@ -722,35 +721,35 @@ CREATE TABLE dbo.crpNPCCorporations
   description          varchar(4000),
   iconID               int,
 
-  CONSTRAINT crpNPCCorporations_PK PRIMARY KEY CLUSTERED (corporationID)
+  CONSTRAINT crpNPCCorporations_PK PRIMARY KEY  (corporationID)
 )
 ;
 
 -- Divisions
-IF OBJECT_ID(dbo.crpNPCDivisions) IS NOT NULL
-  DROP TABLE dbo.crpNPCDivisions
-;
+--IF OBJECT_ID(dbo.crpNPCDivisions) IS NOT NULL
+--  DROP TABLE dbo.crpNPCDivisions
+
 CREATE TABLE dbo.crpNPCDivisions
 (
   divisionID    smallint,
   divisionName  varchar(100),
-  description   varchar(1000),
+  description   text,
   leaderType    varchar(100),
 
-  CONSTRAINT crpNPCDivisions_PK PRIMARY KEY CLUSTERED (divisionID)
+  CONSTRAINT crpNPCDivisions_PK PRIMARY KEY  (divisionID)
 )
 ;
 
 -- Trade info
-IF OBJECT_ID(dbo.crpNPCCorporationTrades) IS NOT NULL
-  DROP TABLE dbo.crpNPCCorporationTrades
-;
+--IF OBJECT_ID(dbo.crpNPCCorporationTrades) IS NOT NULL
+--  DROP TABLE dbo.crpNPCCorporationTrades
+
 CREATE TABLE dbo.crpNPCCorporationTrades
 (
   corporationID  int,
   typeID         int,
   
-  CONSTRAINT crpNPCCorporationTrades_PK PRIMARY KEY CLUSTERED (corporationID, typeID)
+  CONSTRAINT crpNPCCorporationTrades_PK PRIMARY KEY  (corporationID, typeID)
 )
 ;
 
@@ -758,14 +757,14 @@ CREATE TABLE dbo.crpNPCCorporationTrades
 
 -- DOGMA
 -- Attributes
-IF OBJECT_ID(dbo.dgmAttributeTypes) IS NOT NULL
-  DROP TABLE dbo.dgmAttributeTypes
-;
+--IF OBJECT_ID(dbo.dgmAttributeTypes) IS NOT NULL
+--  DROP TABLE dbo.dgmAttributeTypes
+
 CREATE TABLE dbo.dgmAttributeTypes
 (
   attributeID           smallint,
   attributeName         varchar(100),
-  description           varchar(1000),
+  description           text,
   iconID                int,
   defaultValue          real,
   published             bit,
@@ -775,29 +774,29 @@ CREATE TABLE dbo.dgmAttributeTypes
   highIsGood            bit,
   categoryID            smallint,
 
-  CONSTRAINT dgmAttributeTypes_PK PRIMARY KEY CLUSTERED (attributeID)  
+  CONSTRAINT dgmAttributeTypes_PK PRIMARY KEY  (attributeID)  
 )
 ;
 
 -- Attribute categories
 -- Included for convenience, has zero game effect.
-IF OBJECT_ID(dbo.dgmAttributeCategories) IS NOT NULL
-  DROP TABLE dbo.dgmAttributeCategories
-;
+--IF OBJECT_ID(dbo.dgmAttributeCategories) IS NOT NULL
+--  DROP TABLE dbo.dgmAttributeCategories
+
 CREATE TABLE dbo.dgmAttributeCategories
 (
     categoryID           smallint,
     categoryName         varchar(50),
     categoryDescription  varchar(200),  
 
-  CONSTRAINT dgmAttributeCategories_PK PRIMARY KEY CLUSTERED (categoryID)
+  CONSTRAINT dgmAttributeCategories_PK PRIMARY KEY  (categoryID)
 )
 ;
 
 -- Type Attributes
-IF OBJECT_ID(dbo.dgmTypeAttributes) IS NOT NULL
-  DROP TABLE dbo.dgmTypeAttributes
-;
+--IF OBJECT_ID(dbo.dgmTypeAttributes) IS NOT NULL
+--  DROP TABLE dbo.dgmTypeAttributes
+
 CREATE TABLE dbo.dgmTypeAttributes
 (
   typeID       int,
@@ -805,23 +804,23 @@ CREATE TABLE dbo.dgmTypeAttributes
   valueInt     int,
   valueFloat   real,
 
-  CONSTRAINT dgmTypeAttributes_PK PRIMARY KEY CLUSTERED (typeID, attributeID)
+  CONSTRAINT dgmTypeAttributes_PK PRIMARY KEY  (typeID, attributeID)
 )
 ;
 
 
 -- Effects
-IF OBJECT_ID(dbo.dgmEffects) IS NOT NULL
-  DROP TABLE dbo.dgmEffects
-;
+--IF OBJECT_ID(dbo.dgmEffects) IS NOT NULL
+--  DROP TABLE dbo.dgmEffects
+
 CREATE TABLE dbo.dgmEffects
 (
   effectID                        smallint,
-  effectName                      varchar(400) COLLATE Latin1_General_CI_AI,
+  effectName                      varchar(400) ,
   effectCategory                  smallint,
   preExpression                   int,
   postExpression                  int,
-  description                     varchar(1000),
+  description                     text,
   guid                            varchar(60),
   iconID                          int,
   isOffensive                     bit,
@@ -844,78 +843,78 @@ CREATE TABLE dbo.dgmEffects
   npcActivationChanceAttributeID  smallint,
   fittingUsageChanceAttributeID   smallint,
 
-  CONSTRAINT dgmEffects_PK PRIMARY KEY CLUSTERED (effectID)
+  CONSTRAINT dgmEffects_PK PRIMARY KEY  (effectID)
 )
 ;
 
 -- Type Effects
-IF  OBJECT_ID(dbo.dgmTypeEffects) IS NOT NULL
-  DROP TABLE dbo.dgmTypeEffects
-;
+-- IF  OBJECT_ID(dbo.dgmTypeEffects) IS NOT NULL
+--  DROP TABLE dbo.dgmTypeEffects
+ 
 CREATE TABLE dbo.dgmTypeEffects
 (
   typeID      int,
   effectID    smallint,
   isDefault   bit,
 
-  CONSTRAINT dgmTypeEffects_PK PRIMARY KEY CLUSTERED(typeID, effectID)
+  CONSTRAINT dgmTypeEffects_PK PRIMARY KEY (typeID, effectID)
 )
 ;
 
 
 -- EVE
 -- Owner
-IF OBJECT_ID(dbo.eveOwners) IS NOT NULL
-  DROP TABLE dbo.eveOwners
-;
+--IF OBJECT_ID(dbo.eveOwners) IS NOT NULL
+--  DROP TABLE dbo.eveOwners
+ 
 
 -- Locations
-IF OBJECT_ID(dbo.eveLocations) IS NOT NULL
-  DROP TABLE dbo.eveLocations
-;
+--IF OBJECT_ID(dbo.eveLocations) IS NOT NULL
+--  DROP TABLE dbo.eveLocations
+ 
 
 -- Icons
-IF OBJECT_ID(dbo.eveIcons) IS NOT NULL
-  DROP TABLE dbo.eveIcons
-;
+--IF OBJECT_ID(dbo.eveIcons) IS NOT NULL
+--  DROP TABLE dbo.eveIcons
+ 
 CREATE TABLE dbo.eveIcons
 (
   iconID         int            NOT NULL,
-  iconFile       varchar(500)   NOT NULL  DEFAULT '',
-  [description]  varchar(max)  NOT NULL  DEFAULT '',
+  iconFile       text   NOT NULL  DEFAULT '',
+  [description]  text  NOT NULL  DEFAULT '',
   
-  CONSTRAINT eveIcons_PK PRIMARY KEY CLUSTERED (iconID)
+  CONSTRAINT eveIcons_PK PRIMARY KEY  (iconID)
 )
 ;
 
 
 
 -- Names
-IF OBJECT_ID(dbo.eveNames) IS NOT NULL
-  DROP TABLE dbo.eveNames
-;
+--IF OBJECT_ID(dbo.eveNames) IS NOT NULL
+--  DROP TABLE dbo.eveNames
+ 
 
 -- Units
-IF OBJECT_ID(dbo.eveUnits) IS NOT NULL
-  DROP TABLE dbo.eveUnits
-;
+--IF OBJECT_ID(dbo.eveUnits) IS NOT NULL
+--  DROP TABLE dbo.eveUnits
+ 
 CREATE TABLE dbo.eveUnits
 (
   unitID       smallint,
   unitName     varchar(100),
   displayName  varchar(50),
-  description  varchar(1000),
+  description  text,
 
-  CONSTRAINT eveUnits_PK PRIMARY KEY CLUSTERED (unitID)
+  CONSTRAINT eveUnits_PK PRIMARY KEY  (unitID)
 )
 ;
 
 
 -- Blueprints
 -- Base blueprint information
-IF OBJECT_ID(dbo.invBlueprintTypes) IS NOT NULL
-  DROP TABLE dbo.invBlueprintTypes
-;
+--IF OBJECT_ID(dbo.invBlueprintTypes) IS NOT NULL
+--  DROP TABLE dbo.invBlueprintTypes
+ 
 CREATE TABLE dbo.invBlueprintTypes
 (
    blueprintTypeID             int,
@@ -933,16 +932,16 @@ CREATE TABLE dbo.invBlueprintTypes
    wasteFactor                 smallint,
    maxProductionLimit          int,
 
-  CONSTRAINT invBlueprintTypes_PK PRIMARY KEY CLUSTERED (blueprintTypeID)
+  CONSTRAINT invBlueprintTypes_PK PRIMARY KEY  (blueprintTypeID)
 
 )
 ;
 
 -- POS
 -- Control Tower Resources
-IF OBJECT_ID(dbo.invControlTowerResources) IS NOT NULL
-  DROP TABLE dbo.invControlTowerResources
-;
+--IF OBJECT_ID(dbo.invControlTowerResources) IS NOT NULL
+--  DROP TABLE dbo.invControlTowerResources
+ 
 CREATE TABLE dbo.invControlTowerResources
 (
   controlTowerTypeID  int,
@@ -953,28 +952,28 @@ CREATE TABLE dbo.invControlTowerResources
   minSecurityLevel    real,
   factionID           int,
 
-  CONSTRAINT invControlTowerResources_PK PRIMARY KEY CLUSTERED (controlTowerTypeID, resourceTypeID)
+  CONSTRAINT invControlTowerResources_PK PRIMARY KEY  (controlTowerTypeID, resourceTypeID)
 )
 ;
 
 
 -- INVENTORY
 -- POS Resource Purpose
-IF OBJECT_ID(dbo.invControlTowerResourcePurposes) IS NOT NULL
-  DROP TABLE dbo.invControlTowerResourcePurposes
-;
+--IF OBJECT_ID(dbo.invControlTowerResourcePurposes) IS NOT NULL
+--  DROP TABLE dbo.invControlTowerResourcePurposes
+ 
 CREATE TABLE dbo.invControlTowerResourcePurposes
 (
   purpose      smallint,
   purposeText  varchar(100),
   --
-  CONSTRAINT invControlTowerResourcePurposes_PK PRIMARY KEY CLUSTERED (purpose)
+  CONSTRAINT invControlTowerResourcePurposes_PK PRIMARY KEY  (purpose)
 )
 ;
 
-IF OBJECT_ID(dbo.invItems) IS NOT NULL
-  DROP TABLE dbo.invItems
-;
+--IF OBJECT_ID(dbo.invItems) IS NOT NULL
+--  DROP TABLE dbo.invItems
+ 
 CREATE TABLE dbo.invItems
 (
     itemID      bigint    NOT NULL,
@@ -985,43 +984,43 @@ CREATE TABLE dbo.invItems
     quantity    int       NOT NULL,  -- Attention! quantity = -1 signifies a non-stackable item with a quantity of 1
                                      -- where as quantity = 1 signifies a stackable item with a quantity of 1
     --
-    CONSTRAINT invItems_PK PRIMARY KEY CLUSTERED (itemID)
+    CONSTRAINT invItems_PK PRIMARY KEY  (itemID)
 )
-CREATE NONCLUSTERED INDEX items_IX_Location ON invItems (locationID)
-CREATE NONCLUSTERED INDEX items_IX_OwnerLocation ON invItems (ownerID, locationID)
+CREATE  INDEX items_IX_Location ON invItems (locationID)
+CREATE  INDEX items_IX_OwnerLocation ON invItems (ownerID, locationID)
 ;
 
-IF OBJECT_ID(dbo.invUniqueNames) IS NOT NULL
-  DROP TABLE dbo.invUniqueNames
-;
+--IF OBJECT_ID(dbo.invUniqueNames) IS NOT NULL
+--  DROP TABLE dbo.invUniqueNames
+ 
 CREATE TABLE dbo.invUniqueNames
 (
   itemID    int                                          NOT NULL,
-  itemName  varchar(200)  COLLATE Latin1_General_CI_AI  NOT NULL,
+  itemName  varchar(200)    NOT NULL,
   --
   groupID   int                                          NULL,
   --
-  CONSTRAINT invUniqueNames_PK PRIMARY KEY CLUSTERED (itemID)
+  CONSTRAINT invUniqueNames_PK PRIMARY KEY  (itemID)
 )
-CREATE UNIQUE NONCLUSTERED INDEX invUniqueNames_UQ ON dbo.invUniqueNames (itemName)
-CREATE NONCLUSTERED INDEX invUniqueNames_IX_GroupName ON dbo.invUniqueNames (groupID, itemName)
+CREATE UNIQUE  INDEX invUniqueNames_UQ ON dbo.invUniqueNames (itemName)
+CREATE  INDEX invUniqueNames_IX_GroupName ON dbo.invUniqueNames (groupID, itemName)
 ;
 
-IF OBJECT_ID(dbo.invNames) IS NOT NULL
-  DROP TABLE dbo.invNames
-;
+--IF OBJECT_ID(dbo.invNames) IS NOT NULL
+--  DROP TABLE dbo.invNames
+ 
 CREATE TABLE dbo.invNames
 (
     itemID     bigint         NOT NULL,
     itemName   varchar(200)  NOT NULL,
     
-    CONSTRAINT invNames_PK PRIMARY KEY CLUSTERED (itemID)
+    CONSTRAINT invNames_PK PRIMARY KEY  (itemID)
 )
 ;
 
-IF OBJECT_ID(dbo.invPositions) IS NOT NULL
-  DROP TABLE dbo.invPositions
-;
+--IF OBJECT_ID(dbo.invPositions) IS NOT NULL
+--  DROP TABLE dbo.invPositions
+ 
 CREATE TABLE dbo.invPositions
 (
     itemID  bigint  NOT NULL,
@@ -1032,31 +1031,31 @@ CREATE TABLE dbo.invPositions
     pitch   real    NULL,
     roll    real    NULL,
     --
-    CONSTRAINT invPositions_PK PRIMARY KEY CLUSTERED (itemID)
+    CONSTRAINT invPositions_PK PRIMARY KEY  (itemID)
 )
 ;
 
 -- Categories
-IF OBJECT_ID(dbo.invCategories) IS NOT NULL
-  DROP TABLE dbo.invCategories
-;
+--IF OBJECT_ID(dbo.invCategories) IS NOT NULL
+--  DROP TABLE dbo.invCategories
+ 
 CREATE TABLE dbo.invCategories
 (
   categoryID    int,
  
-  categoryName  varchar(100)   COLLATE Latin1_General_CI_AI,
-  description   varchar(3000),
+  categoryName  varchar(100)   ,
+  description   text,
   iconID        int,
   published     bit,
 
-  CONSTRAINT invCategories_PK PRIMARY KEY CLUSTERED (categoryID)
+  CONSTRAINT invCategories_PK PRIMARY KEY  (categoryID)
 )
 ;
 
 -- Contraband
-IF OBJECT_ID(dbo.invContrabandTypes) IS NOT NULL
-  DROP TABLE dbo.invContrabandTypes
-;
+--IF OBJECT_ID(dbo.invContrabandTypes) IS NOT NULL
+--  DROP TABLE dbo.invContrabandTypes
+ 
 CREATE TABLE dbo.invContrabandTypes
 (
   factionID         int,
@@ -1067,15 +1066,15 @@ CREATE TABLE dbo.invContrabandTypes
   fineByValue       real,
   attackMinSec      real,
 
-  CONSTRAINT invContrabandTypes_PK PRIMARY KEY CLUSTERED (factionID, typeID)
+  CONSTRAINT invContrabandTypes_PK PRIMARY KEY  (factionID, typeID)
 )
-  CREATE NONCLUSTERED INDEX invContrabandTypes_IX_type ON dbo.invContrabandTypes (typeID)
+  CREATE  INDEX invContrabandTypes_IX_type ON dbo.invContrabandTypes (typeID)
 ;
 
 -- Flags
-IF OBJECT_ID(dbo.invFlags) IS NOT NULL
-  DROP TABLE dbo.invFlags
-;
+--IF OBJECT_ID(dbo.invFlags) IS NOT NULL
+--  DROP TABLE dbo.invFlags
+ 
 CREATE TABLE dbo.invFlags
 (
   flagID    smallint,
@@ -1083,21 +1082,21 @@ CREATE TABLE dbo.invFlags
   flagText  varchar(100),
   orderID   int,
 
-  CONSTRAINT invFlags_PK PRIMARY KEY CLUSTERED (flagID)
+  CONSTRAINT invFlags_PK PRIMARY KEY  (flagID)
 )
 ;
 
 -- Groups
-IF OBJECT_ID(dbo.invGroups) IS NOT NULL
-  DROP TABLE dbo.invGroups
-;
+--IF OBJECT_ID(dbo.invGroups) IS NOT NULL
+--  DROP TABLE dbo.invGroups
+ 
 CREATE TABLE dbo.invGroups
 (
   groupID               int,
   --
   categoryID            int,
-  groupName             varchar(100)   COLLATE Latin1_General_CI_AI,
-  description           varchar(3000),
+  groupName             varchar(100)   ,
+  description           text,
   iconID                int,
   useBasePrice          bit,
   allowManufacture      bit,
@@ -1107,50 +1106,50 @@ CREATE TABLE dbo.invGroups
   fittableNonSingleton  bit,
   published             bit,
   
-  CONSTRAINT invGroups_PK PRIMARY KEY CLUSTERED (groupID)
+  CONSTRAINT invGroups_PK PRIMARY KEY  (groupID)
 )
-  CREATE NONCLUSTERED INDEX invGroups_IX_category ON dbo.invGroups (categoryID)
+  CREATE  INDEX invGroups_IX_category ON dbo.invGroups (categoryID)
 ;
 
 
 -- Market groups
-IF OBJECT_ID(dbo.invMarketGroups) IS NOT NULL
-  DROP TABLE dbo.invMarketGroups
-;
+--IF OBJECT_ID(dbo.invMarketGroups) IS NOT NULL
+--  DROP TABLE dbo.invMarketGroups
+ 
 CREATE TABLE dbo.invMarketGroups
 (
   marketGroupID    int,
   --
   parentGroupID    int,
   marketGroupName  varchar(100),
-  description      varchar(3000),
+  description      text,
   iconID           int,
   hasTypes         bit,
 
-  CONSTRAINT invMarketGroups_PK PRIMARY KEY CLUSTERED (marketGroupID)
+  CONSTRAINT invMarketGroups_PK PRIMARY KEY  (marketGroupID)
 )
 ;
 
 -- Meta Groups
-IF OBJECT_ID(dbo.invMetaGroups) IS NOT NULL
-  DROP TABLE dbo.invMetaGroups
-;
+--IF OBJECT_ID(dbo.invMetaGroups) IS NOT NULL
+--  DROP TABLE dbo.invMetaGroups
+ 
 CREATE TABLE dbo.invMetaGroups
 (
   metaGroupID    smallint,
   --
   metaGroupName  varchar(100),
-  description    varchar(1000),
+  description    text,
   iconID         int,
 
-  CONSTRAINT invMetaGroups_PK PRIMARY KEY CLUSTERED (metaGroupID)
+  CONSTRAINT invMetaGroups_PK PRIMARY KEY  (metaGroupID)
 )
 ;
 
 -- Meta Types
-IF OBJECT_ID(dbo.invMetaTypes) IS NOT NULL
-  DROP TABLE dbo.invMetaTypes
-;
+--IF OBJECT_ID(dbo.invMetaTypes) IS NOT NULL
+--  DROP TABLE dbo.invMetaTypes
+ 
 CREATE TABLE dbo.invMetaTypes
 (
   typeID        int,
@@ -1158,14 +1157,14 @@ CREATE TABLE dbo.invMetaTypes
   parentTypeID  int,
   metaGroupID   smallint,
 
-  CONSTRAINT invMetaTypes_PK PRIMARY KEY CLUSTERED(typeID)
+  CONSTRAINT invMetaTypes_PK PRIMARY KEY (typeID)
 )
 ;
 
 -- Type Reactions
-IF OBJECT_ID(dbo.invTypeReactions) IS NOT NULL
-  DROP TABLE dbo.invTypeReactions
-;
+--IF OBJECT_ID(dbo.invTypeReactions) IS NOT NULL
+--  DROP TABLE dbo.invTypeReactions
+ 
 CREATE TABLE dbo.invTypeReactions
 (
   reactionTypeID  int,
@@ -1173,20 +1172,20 @@ CREATE TABLE dbo.invTypeReactions
   typeID          int,
   quantity        smallint,
   --
-  CONSTRAINT pk_invTypeReactions PRIMARY KEY CLUSTERED (reactionTypeID, input, typeID)
+  CONSTRAINT pk_invTypeReactions PRIMARY KEY  (reactionTypeID, input, typeID)
 )
 
 
 -- Types
-IF OBJECT_ID(dbo.invTypes) IS NOT NULL
-  DROP TABLE dbo.invTypes
+--IF OBJECT_ID(dbo.invTypes) IS NOT NULL
+--  DROP TABLE dbo.invTypes
 ;
 CREATE TABLE dbo.invTypes
 (
   typeID               int,
   groupID              int,
-  typeName             varchar(100)   COLLATE Latin1_General_CI_AI,
-  description          varchar(3000),
+  typeName             varchar(100)   ,
+  description          text,
   mass                 real,
   volume               real,
   capacity             real,
@@ -1198,14 +1197,14 @@ CREATE TABLE dbo.invTypes
   chanceOfDuplicating  real,
   iconID               int,
                                  
-  CONSTRAINT invTypes_PK PRIMARY KEY CLUSTERED (typeID)
+  CONSTRAINT invTypes_PK PRIMARY KEY  (typeID)
 )
-CREATE NONCLUSTERED INDEX invTypes_IX_Group ON dbo.invTypes (groupID)
-;
+CREATE  INDEX invTypes_IX_Group ON dbo.invTypes (groupID)
+ ;
 
 
-IF OBJECT_ID(dbo.invTypeMaterials) IS NOT NULL
-  DROP TABLE dbo.invTypeMaterials
+--IF OBJECT_ID(dbo.invTypeMaterials) IS NOT NULL
+--  DROP TABLE dbo.invTypeMaterials
 CREATE TABLE dbo.invTypeMaterials
 (
   typeID          int  NOT NULL,
@@ -1213,41 +1212,41 @@ CREATE TABLE dbo.invTypeMaterials
   --
   quantity        int  NOT NULL  DEFAULT 0,
   --
-  CONSTRAINT invTypeMaterials_PK PRIMARY KEY CLUSTERED (typeID, materialTypeID)
+  CONSTRAINT invTypeMaterials_PK PRIMARY KEY  (typeID, materialTypeID)
 )
-
+;
 
 
 -- MAP
 
 -- mapLocationScenes
-IF OBJECT_ID(dbo.mapLocationScenes) IS NOT NULL
-  DROP TABLE dbo.mapLocationScenes
+--IF OBJECT_ID(dbo.mapLocationScenes) IS NOT NULL
+--  DROP TABLE dbo.mapLocationScenes
 CREATE TABLE dbo.mapLocationScenes
 (
   locationID  int      NOT NULL,
   --
   graphicID   int      NULL,
   
-  CONSTRAINT mapLocationScenes_PK_ PRIMARY KEY CLUSTERED (locationID)
+  CONSTRAINT mapLocationScenes_PK_ PRIMARY KEY  (locationID)
 )
-
+;
 -- mapLocationWormholeClasses
-IF OBJECT_ID(dbo.mapLocationWormholeClasses) IS NOT NULL
-  DROP TABLE dbo.mapLocationWormholeClasses
+--IF OBJECT_ID(dbo.mapLocationWormholeClasses) IS NOT NULL
+--  DROP TABLE dbo.mapLocationWormholeClasses
 CREATE TABLE dbo.mapLocationWormholeClasses
 (
   locationID       int      NOT NULL,
   --
   wormholeClassID  smallint  NULL,
 
-  CONSTRAINT mapLocationWormholeClasses_PK PRIMARY KEY CLUSTERED (locationID)
+  CONSTRAINT mapLocationWormholeClasses_PK PRIMARY KEY  (locationID)
 )
-
--- Celestial Statistics
-IF OBJECT_ID(dbo.mapCelestialStatistics) IS NOT NULL
-  DROP TABLE dbo.mapCelestialStatistics
 ;
+-- Celestial Statistics
+--IF OBJECT_ID(dbo.mapCelestialStatistics) IS NOT NULL
+--  DROP TABLE dbo.mapCelestialStatistics
+ 
 CREATE TABLE dbo.mapCelestialStatistics
 (
   celestialID     int,
@@ -1271,14 +1270,14 @@ CREATE TABLE dbo.mapCelestialStatistics
   radius          real,
   mass            real,
   --
-  CONSTRAINT mapCelestialStatistics_PK PRIMARY KEY CLUSTERED (celestialID)
+  CONSTRAINT mapCelestialStatistics_PK PRIMARY KEY  (celestialID)
 )
-;
+; 
 
 -- Constellation Jumps
-IF OBJECT_ID(dbo.mapConstellationJumps) IS NOT NULL
-  DROP TABLE dbo.mapConstellationJumps
-;
+--IF OBJECT_ID(dbo.mapConstellationJumps) IS NOT NULL
+--  DROP TABLE dbo.mapConstellationJumps
+ 
 CREATE TABLE dbo.mapConstellationJumps
 (
   fromRegionID         int,
@@ -1286,21 +1285,21 @@ CREATE TABLE dbo.mapConstellationJumps
   toConstellationID    int,
   toRegionID           int,
   --
-  CONSTRAINT mapConstellationJumps_PK PRIMARY KEY CLUSTERED (fromConstellationID, toConstellationID)
+  CONSTRAINT mapConstellationJumps_PK PRIMARY KEY  (fromConstellationID, toConstellationID)
 )
-CREATE NONCLUSTERED INDEX mapConstellationJumps_IX_fromRegion ON mapConstellationJumps(fromRegionID)
+CREATE  INDEX mapConstellationJumps_IX_fromRegion ON mapConstellationJumps(fromRegionID)
 ;
 
 
 -- Constellations
-IF OBJECT_ID(dbo.mapConstellations) IS NOT NULL
-  DROP TABLE dbo.mapConstellations
-;
+--IF OBJECT_ID(dbo.mapConstellations) IS NOT NULL
+--  DROP TABLE dbo.mapConstellations
+ 
 CREATE TABLE dbo.mapConstellations
 (
   regionID             int,
   constellationID      int,
-  constellationName    varchar(100)  COLLATE Latin1_General_CI_AI,
+  constellationName    varchar(100)  ,
   x                    real,
   y                    real,
   z                    real,
@@ -1313,15 +1312,15 @@ CREATE TABLE dbo.mapConstellations
   factionID            int,
   radius               real,
   --
-  CONSTRAINT mapConstellations_PK PRIMARY KEY CLUSTERED (constellationID)
+  CONSTRAINT mapConstellations_PK PRIMARY KEY  (constellationID)
 )
-CREATE NONCLUSTERED INDEX mapConstellations_IX_region ON mapConstellations(regionID)
+CREATE  INDEX mapConstellations_IX_region ON mapConstellations(regionID)
 ;
 
 -- Denormalized Data
-IF OBJECT_ID(dbo.mapDenormalize) IS NOT NULL
-  DROP TABLE dbo.mapDenormalize
-;
+--IF OBJECT_ID(dbo.mapDenormalize) IS NOT NULL
+--  DROP TABLE dbo.mapDenormalize
+ 
 CREATE TABLE dbo.mapDenormalize
 (
   itemID           int,
@@ -1340,36 +1339,36 @@ CREATE TABLE dbo.mapDenormalize
   celestialIndex   smallint,
   orbitIndex       smallint,
   --
-  CONSTRAINT mapDenormalize_PK PRIMARY KEY CLUSTERED (itemID)
+  CONSTRAINT mapDenormalize_PK PRIMARY KEY  (itemID)
 )
-CREATE NONCLUSTERED INDEX mapDenormalize_IX_groupRegion ON mapDenormalize(groupID, regionID)
-CREATE NONCLUSTERED INDEX mapDenormalize_IX_groupConstellation ON mapDenormalize(groupID, constellationID)
-CREATE NONCLUSTERED INDEX mapDenormalize_IX_groupSystem ON mapDenormalize(groupID, solarSystemID)
-CREATE NONCLUSTERED INDEX mapDenormalize_IX_system ON mapDenormalize(solarSystemID)
-CREATE NONCLUSTERED INDEX mapDenormalize_IX_constellation ON mapDenormalize(constellationID)
-CREATE NONCLUSTERED INDEX mapDenormalize_IX_region ON mapDenormalize(regionID)
-CREATE NONCLUSTERED INDEX mapDenormalize_IX_orbit ON mapDenormalize(orbitID)
+CREATE  INDEX mapDenormalize_IX_groupRegion ON mapDenormalize(groupID, regionID)
+CREATE  INDEX mapDenormalize_IX_groupConstellation ON mapDenormalize(groupID, constellationID)
+CREATE  INDEX mapDenormalize_IX_groupSystem ON mapDenormalize(groupID, solarSystemID)
+CREATE  INDEX mapDenormalize_IX_system ON mapDenormalize(solarSystemID)
+CREATE  INDEX mapDenormalize_IX_constellation ON mapDenormalize(constellationID)
+CREATE  INDEX mapDenormalize_IX_region ON mapDenormalize(regionID)
+CREATE  INDEX mapDenormalize_IX_orbit ON mapDenormalize(orbitID)
 ;
 
 
 -- Jumps
-IF OBJECT_ID(dbo.mapJumps) IS NOT NULL
-  DROP TABLE dbo.mapJumps
-;
+--IF OBJECT_ID(dbo.mapJumps) IS NOT NULL
+--  DROP TABLE dbo.mapJumps
+ 
 CREATE TABLE dbo.mapJumps
 (
   stargateID   int,
   celestialID  int,
   --
-  CONSTRAINT mapJumps_PK PRIMARY KEY CLUSTERED (stargateID)
+  CONSTRAINT mapJumps_PK PRIMARY KEY  (stargateID)
 )
 ;
 
 
 -- Landmarks
-IF OBJECT_ID(dbo.mapLandmarks) IS NOT NULL
-  DROP TABLE dbo.mapLandmarks
-;
+--IF OBJECT_ID(dbo.mapLandmarks) IS NOT NULL
+--  DROP TABLE dbo.mapLandmarks
+ 
 CREATE TABLE dbo.mapLandmarks
 (
   landmarkID    smallint,
@@ -1383,32 +1382,32 @@ CREATE TABLE dbo.mapLandmarks
   iconID        int,
   importance    smallint
   --
-  CONSTRAINT mapLandmarks_PK PRIMARY KEY CLUSTERED (landmarkID)
+  CONSTRAINT mapLandmarks_PK PRIMARY KEY  (landmarkID)
 )
 
 
 -- Region Jumps
-IF OBJECT_ID(dbo.mapRegionJumps) IS NOT NULL
-  DROP TABLE dbo.mapRegionJumps
+--IF OBJECT_ID(dbo.mapRegionJumps) IS NOT NULL
+--  DROP TABLE dbo.mapRegionJumps
 ;
 CREATE TABLE dbo.mapRegionJumps
 (
   fromRegionID  int  NOT NULL,
   toRegionID    int  NOT NULL,
   --
-  CONSTRAINT mapRegionJumps_PK PRIMARY KEY CLUSTERED (fromRegionID, toRegionID)
+  CONSTRAINT mapRegionJumps_PK PRIMARY KEY  (fromRegionID, toRegionID)
 )
 ;
 
 
 -- Regions
-IF OBJECT_ID(dbo.mapRegions) IS NOT NULL
-  DROP TABLE dbo.mapRegions
-;
+--IF OBJECT_ID(dbo.mapRegions) IS NOT NULL
+--  DROP TABLE dbo.mapRegions
+ 
 CREATE TABLE dbo.mapRegions
 (
   regionID    int,
-  regionName  varchar(100)  COLLATE Latin1_General_CI_AI,
+  regionName  varchar(100)  ,
   x           real,
   y           real,
   z           real,
@@ -1421,14 +1420,14 @@ CREATE TABLE dbo.mapRegions
   factionID   int,
   radius      real,
   --
-  CONSTRAINT mapRegions_PK PRIMARY KEY CLUSTERED (regionID)
+  CONSTRAINT mapRegions_PK PRIMARY KEY  (regionID)
 )
 ;
 
 -- System Jumps
-IF OBJECT_ID(dbo.mapSolarSystemJumps) IS NOT NULL
-  DROP TABLE dbo.mapSolarSystemJumps
-;
+--IF OBJECT_ID(dbo.mapSolarSystemJumps) IS NOT NULL
+--  DROP TABLE dbo.mapSolarSystemJumps
+ 
 CREATE TABLE dbo.mapSolarSystemJumps
 (
   fromRegionID         int,
@@ -1438,23 +1437,23 @@ CREATE TABLE dbo.mapSolarSystemJumps
   toConstellationID    int,
   toRegionID           int,
   --
-  CONSTRAINT mapSolarSystemJumps_PK PRIMARY KEY CLUSTERED (fromSolarSystemID, toSolarSystemID)
+  CONSTRAINT mapSolarSystemJumps_PK PRIMARY KEY  (fromSolarSystemID, toSolarSystemID)
 )
-CREATE NONCLUSTERED INDEX mapSolarSystemJumps_IX_fromRegion ON mapSolarSystemJumps(fromRegionID)
-CREATE NONCLUSTERED INDEX mapSolarSystemJumps_IX_fromConstellation ON mapSolarSystemJumps(fromConstellationID)
+CREATE  INDEX mapSolarSystemJumps_IX_fromRegion ON mapSolarSystemJumps(fromRegionID)
+CREATE  INDEX mapSolarSystemJumps_IX_fromConstellation ON mapSolarSystemJumps(fromConstellationID)
 ;
 
 
 -- Systems
-IF OBJECT_ID(dbo.mapSolarSystems) IS NOT NULL
-  DROP TABLE dbo.mapSolarSystems
-;
+--IF OBJECT_ID(dbo.mapSolarSystems) IS NOT NULL
+--  DROP TABLE dbo.mapSolarSystems
+ 
 CREATE TABLE dbo.mapSolarSystems
 (
   regionID             int,
   constellationID      int,
   solarSystemID        int,
-  solarSystemName      varchar(100)  COLLATE Latin1_General_CI_AI,
+  solarSystemName      varchar(100)  ,
   x                    real,
   y                    real,
   z                    real,
@@ -1479,17 +1478,17 @@ CREATE TABLE dbo.mapSolarSystems
   sunTypeID            int,
   securityClass        varchar(2),
   --
-  CONSTRAINT mapSolarSystems_PK PRIMARY KEY CLUSTERED (solarSystemID)
+  CONSTRAINT mapSolarSystems_PK PRIMARY KEY  (solarSystemID)
 )
-CREATE NONCLUSTERED INDEX mapSolarSystems_IX_region ON mapSolarSystems(regionID)
-CREATE NONCLUSTERED INDEX mapSolarSystems_IX_constellation ON mapSolarSystems(constellationID)
-CREATE NONCLUSTERED INDEX mapSolarSystems_IX_security ON mapSolarSystems([security])
+CREATE  INDEX mapSolarSystems_IX_region ON mapSolarSystems(regionID)
+CREATE  INDEX mapSolarSystems_IX_constellation ON mapSolarSystems(constellationID)
+CREATE  INDEX mapSolarSystems_IX_security ON mapSolarSystems([security])
 ;
 
 -- Universe
-IF OBJECT_ID(dbo.mapUniverse) IS NOT NULL
-  DROP TABLE dbo.mapUniverse
-;
+--IF OBJECT_ID(dbo.mapUniverse) IS NOT NULL
+--  DROP TABLE dbo.mapUniverse
+ 
 CREATE TABLE dbo.mapUniverse
 (
   universeID    int,
@@ -1505,27 +1504,27 @@ CREATE TABLE dbo.mapUniverse
   zMax          real,
   radius        real,
   --
-  CONSTRAINT mapUniverse_PK PRIMARY KEY CLUSTERED (universeID)
+  CONSTRAINT mapUniverse_PK PRIMARY KEY  (universeID)
 )
 ;
 
 
 -- RAM
-IF OBJECT_ID(dbo.ramInstallationTypeContents) IS NOT NULL
-  DROP TABLE dbo.ramInstallationTypeContents
+--IF OBJECT_ID(dbo.ramInstallationTypeContents) IS NOT NULL
+--  DROP TABLE dbo.ramInstallationTypeContents
 CREATE TABLE dbo.ramInstallationTypeContents
 (
   installationTypeID  int      NOT NULL,
   assemblyLineTypeID  smallint  NOT NULL,
   --
   quantity            smallint  NULL,
-  CONSTRAINT ramInstallationTypeContents_PK PRIMARY KEY CLUSTERED (installationTypeID, assemblyLineTypeID)
+  CONSTRAINT ramInstallationTypeContents_PK PRIMARY KEY  (installationTypeID, assemblyLineTypeID)
 )
 ;
 
 -- type requirements
-IF OBJECT_ID(dbo.ramTypeRequirements) IS NOT NULL
-  DROP TABLE dbo.ramTypeRequirements
+--IF OBJECT_ID(dbo.ramTypeRequirements) IS NOT NULL
+--  DROP TABLE dbo.ramTypeRequirements
 CREATE TABLE dbo.ramTypeRequirements
 (
   typeID          int      NOT NULL,
@@ -1536,29 +1535,29 @@ CREATE TABLE dbo.ramTypeRequirements
   damagePerJob    real    NULL,
   recycle         bit      NULL,
   --
-  CONSTRAINT ramTypeRequirements_PK PRIMARY KEY CLUSTERED (typeID, activityID, requiredTypeID)
+  CONSTRAINT ramTypeRequirements_PK PRIMARY KEY  (typeID, activityID, requiredTypeID)
 )
 
 -- Activities
-IF OBJECT_ID(dbo.ramActivities) IS NOT NULL
-  DROP TABLE dbo.ramActivities
+--IF OBJECT_ID(dbo.ramActivities) IS NOT NULL
+--  DROP TABLE dbo.ramActivities
 ;
 CREATE TABLE dbo.ramActivities
 (
   activityID     smallint,
   activityName   varchar(100),
   iconNo         varchar(5),
-  description    varchar(1000),
+  description    text,
   published      bit,
   --
-  CONSTRAINT ramActivities_PK PRIMARY KEY CLUSTERED (activityID)
+  CONSTRAINT ramActivities_PK PRIMARY KEY  (activityID)
 )
 ;
 
 -- Assembly Lines
-IF OBJECT_ID(dbo.ramAssemblyLines) IS NOT NULL
-  DROP TABLE dbo.ramAssemblyLines
-;
+--IF OBJECT_ID(dbo.ramAssemblyLines) IS NOT NULL
+--  DROP TABLE dbo.ramAssemblyLines
+ 
 CREATE TABLE dbo.ramAssemblyLines
 (
   assemblyLineID                int,
@@ -1579,16 +1578,16 @@ CREATE TABLE dbo.ramAssemblyLines
   ownerID                       int,
   activityID                    smallint,
   --
-  CONSTRAINT ramAssemblyLines_PK PRIMARY KEY CLUSTERED (assemblyLineID)
+  CONSTRAINT ramAssemblyLines_PK PRIMARY KEY  (assemblyLineID)
 )
-CREATE NONCLUSTERED INDEX ramAssemblyLines_IX_container ON ramAssemblyLines (containerID)
-CREATE NONCLUSTERED INDEX ramAssemblyLines_IX_owner ON ramAssemblyLines (ownerID)
+CREATE  INDEX ramAssemblyLines_IX_container ON ramAssemblyLines (containerID)
+CREATE  INDEX ramAssemblyLines_IX_owner ON ramAssemblyLines (ownerID)
 ;
 
 -- Assembly Lines by Station
-IF OBJECT_ID(dbo.ramAssemblyLineStations) IS NOT NULL
-  DROP TABLE dbo.ramAssemblyLineStations
-;
+--IF OBJECT_ID(dbo.ramAssemblyLineStations) IS NOT NULL
+--  DROP TABLE dbo.ramAssemblyLineStations
+ 
 CREATE TABLE dbo.ramAssemblyLineStations
 (
   stationID           int,
@@ -1599,18 +1598,18 @@ CREATE TABLE dbo.ramAssemblyLineStations
   solarSystemID       int,
   regionID            int,
   --
-  CONSTRAINT ramAssemblyLineStations_PK PRIMARY KEY CLUSTERED (stationID, assemblyLineTypeID)
+  CONSTRAINT ramAssemblyLineStations_PK PRIMARY KEY  (stationID, assemblyLineTypeID)
 )
-CREATE NONCLUSTERED INDEX ramAssemblyLineStations_IX_region ON ramAssemblyLineStations (regionID)
-CREATE NONCLUSTERED INDEX ramAssemblyLineStations_IX_owner ON ramAssemblyLineStations (ownerID)
+CREATE  INDEX ramAssemblyLineStations_IX_region ON ramAssemblyLineStations (regionID)
+CREATE  INDEX ramAssemblyLineStations_IX_owner ON ramAssemblyLineStations (ownerID)
 
 ;
 
 
 -- Assembly Line Type Details Per Category
-IF OBJECT_ID(dbo.ramAssemblyLineTypeDetailPerCategory) IS NOT NULL
-  DROP TABLE dbo.ramAssemblyLineTypeDetailPerCategory
-;
+--IF OBJECT_ID(dbo.ramAssemblyLineTypeDetailPerCategory) IS NOT NULL
+--  DROP TABLE dbo.ramAssemblyLineTypeDetailPerCategory
+ 
 CREATE TABLE dbo.ramAssemblyLineTypeDetailPerCategory
 (
   assemblyLineTypeID  smallint,
@@ -1618,15 +1617,15 @@ CREATE TABLE dbo.ramAssemblyLineTypeDetailPerCategory
   timeMultiplier      real,
   materialMultiplier  real,
   --
-  CONSTRAINT ramAssemblyLineTypeDetailPerCategory_PK PRIMARY KEY CLUSTERED (assemblyLineTypeID, categoryID)
+  CONSTRAINT ramAssemblyLineTypeDetailPerCategory_PK PRIMARY KEY  (assemblyLineTypeID, categoryID)
 )
 ;
 
 
 -- ramAssemblyLineTypeDetailPerGroup
-IF OBJECT_ID(dbo.ramAssemblyLineTypeDetailPerGroup) IS NOT NULL
-  DROP TABLE dbo.ramAssemblyLineTypeDetailPerGroup
-;
+--IF OBJECT_ID(dbo.ramAssemblyLineTypeDetailPerGroup) IS NOT NULL
+--  DROP TABLE dbo.ramAssemblyLineTypeDetailPerGroup
+ 
 CREATE TABLE dbo.ramAssemblyLineTypeDetailPerGroup
 (
   assemblyLineTypeID  smallint,
@@ -1634,40 +1633,40 @@ CREATE TABLE dbo.ramAssemblyLineTypeDetailPerGroup
   timeMultiplier      real,
   materialMultiplier  real,
   --
-  CONSTRAINT ramAssemblyLineTypeDetailPerGroup_PK PRIMARY KEY CLUSTERED (assemblyLineTypeID, groupID)
+  CONSTRAINT ramAssemblyLineTypeDetailPerGroup_PK PRIMARY KEY  (assemblyLineTypeID, groupID)
 )
 ;
 
 -- Assembly Line Types
-IF OBJECT_ID(dbo.ramAssemblyLineTypes) IS NOT NULL
-  DROP TABLE dbo.ramAssemblyLineTypes
-;
+--IF OBJECT_ID(dbo.ramAssemblyLineTypes) IS NOT NULL
+--  DROP TABLE dbo.ramAssemblyLineTypes
+ 
 CREATE TABLE dbo.ramAssemblyLineTypes
 (
   assemblyLineTypeID      smallint,
   assemblyLineTypeName    varchar(100),
-  description             varchar(1000),
+  description             text,
   baseTimeMultiplier      real,
   baseMaterialMultiplier  real,
   volume                  real,
   activityID              smallint,
   minCostPerHour          real,
   --
-  CONSTRAINT ramAssemblyLineTypes_PK PRIMARY KEY CLUSTERED (assemblyLineTypeID)
+  CONSTRAINT ramAssemblyLineTypes_PK PRIMARY KEY  (assemblyLineTypeID)
 )
 ;
 
 -- STATIONS
 -- Operations
-IF OBJECT_ID(dbo.staOperations) IS NOT NULL
-  DROP TABLE dbo.staOperations
-;
+--IF OBJECT_ID(dbo.staOperations) IS NOT NULL
+--  DROP TABLE dbo.staOperations
+ 
 CREATE TABLE dbo.staOperations
 (
   activityID             smallint,
   operationID            smallint,
   operationName          varchar(100),
-  description            varchar(1000),
+  description            text,
   fringe                 smallint,
   corridor               smallint,
   hub                    smallint,
@@ -1679,42 +1678,42 @@ CREATE TABLE dbo.staOperations
   gallenteStationTypeID  int,
   joveStationTypeID      int,
   --
-  CONSTRAINT staOperations_PK PRIMARY KEY CLUSTERED (operationID)
+  CONSTRAINT staOperations_PK PRIMARY KEY  (operationID)
 )
 ;
 
 -- Operation Services
-IF OBJECT_ID(dbo.staOperationServices) IS NOT NULL
-  DROP TABLE dbo.staOperationServices
-;
+--IF OBJECT_ID(dbo.staOperationServices) IS NOT NULL
+--  DROP TABLE dbo.staOperationServices
+ 
 CREATE TABLE dbo.staOperationServices
 (
   operationID  smallint,
   serviceID    int,
   --
-  CONSTRAINT staOperationServices_PK PRIMARY KEY CLUSTERED (operationID, serviceID)
+  CONSTRAINT staOperationServices_PK PRIMARY KEY  (operationID, serviceID)
 )
 ;
 
 -- Services
-IF OBJECT_ID(dbo.staServices) IS NOT NULL
-  DROP TABLE dbo.staServices
-;
+--IF OBJECT_ID(dbo.staServices) IS NOT NULL
+--  DROP TABLE dbo.staServices
+ 
 CREATE TABLE dbo.staServices
 (
   serviceID    int,
   serviceName  varchar(100),
-  description  varchar(1000),
+  description  text,
   --
-  CONSTRAINT staServices_PK PRIMARY KEY CLUSTERED (serviceID)
+  CONSTRAINT staServices_PK PRIMARY KEY  (serviceID)
 )
 ;
 
 
 -- Stations
-IF OBJECT_ID(dbo.staStations) IS NOT NULL
-  DROP TABLE dbo.staStations
-;
+--IF OBJECT_ID(dbo.staStations) IS NOT NULL
+--  DROP TABLE dbo.staStations
+ 
 CREATE TABLE dbo.staStations
 (
   stationID                 int,
@@ -1729,7 +1728,7 @@ CREATE TABLE dbo.staStations
   solarSystemID             int,
   constellationID           int,
   regionID                  int,
-  stationName               varchar(100)  COLLATE Latin1_General_CI_AI,
+  stationName               varchar(100)  ,
   x                         real,
   y                         real,
   z                         real,
@@ -1737,20 +1736,20 @@ CREATE TABLE dbo.staStations
   reprocessingStationsTake  real,
   reprocessingHangarFlag    smallint,
   --
-  CONSTRAINT staStations_PK PRIMARY KEY CLUSTERED (stationID)
+  CONSTRAINT staStations_PK PRIMARY KEY  (stationID)
 )
-CREATE NONCLUSTERED INDEX staStations_IX_region ON staStations (regionID)
-CREATE NONCLUSTERED INDEX staStations_IX_system ON staStations (solarSystemID)
-CREATE NONCLUSTERED INDEX staStations_IX_constellation ON staStations (constellationID)
-CREATE NONCLUSTERED INDEX staStations_IX_operation ON staStations (operationID)
-CREATE NONCLUSTERED INDEX staStations_IX_type ON staStations (stationTypeID)
-CREATE NONCLUSTERED INDEX staStations_IX_corporation ON staStations (corporationID)
+CREATE  INDEX staStations_IX_region ON staStations (regionID)
+CREATE  INDEX staStations_IX_system ON staStations (solarSystemID)
+CREATE  INDEX staStations_IX_constellation ON staStations (constellationID)
+CREATE  INDEX staStations_IX_operation ON staStations (operationID)
+CREATE  INDEX staStations_IX_type ON staStations (stationTypeID)
+CREATE  INDEX staStations_IX_corporation ON staStations (corporationID)
 ;
 
 -- Types
-IF OBJECT_ID(dbo.staStationTypes) IS NOT NULL
-  DROP TABLE dbo.staStationTypes
-;
+--IF OBJECT_ID(dbo.staStationTypes) IS NOT NULL
+--  DROP TABLE dbo.staStationTypes
+ 
 CREATE TABLE dbo.staStationTypes
 (
   stationTypeID           int,
@@ -1766,34 +1765,34 @@ CREATE TABLE dbo.staStationTypes
   reprocessingEfficiency  real,
   conquerable             bit,
   --
-  CONSTRAINT stationTypes_PK PRIMARY KEY CLUSTERED (stationTypeID)
+  CONSTRAINT stationTypes_PK PRIMARY KEY  (stationTypeID)
 )
 ;
 
 -- Factional Warfare
-IF OBJECT_ID(dbo.warCombatZones) IS NOT NULL
-  DROP TABLE dbo.warCombatZones
-;
+--IF OBJECT_ID(dbo.warCombatZones) IS NOT NULL
+--  DROP TABLE dbo.warCombatZones
+ 
 CREATE TABLE dbo.warCombatZones
 (
   combatZoneID    int            NOT NULL DEFAULT -1,
   combatZoneName  varchar(100)  NULL,
   factionID       int            NULL,
   centerSystemID  int            NULL,
-  description     varchar(500)  NULL,
-  CONSTRAINT combatZones_PK PRIMARY KEY CLUSTERED (combatZoneID)
+  description     text  NULL,
+  CONSTRAINT combatZones_PK PRIMARY KEY  (combatZoneID)
 )
 ;
 
-IF OBJECT_ID(dbo.warCombatZoneSystems) IS NOT NULL
-  DROP TABLE dbo.warCombatZoneSystems
-;
+--IF OBJECT_ID(dbo.warCombatZoneSystems) IS NOT NULL
+--  DROP TABLE dbo.warCombatZoneSystems
+ 
 CREATE TABLE dbo.warCombatZoneSystems
 (
   solarSystemID  int      NOT NULL,
   combatZoneID   int      NULL,
 
-  CONSTRAINT combatZoneSystems_PK PRIMARY KEY CLUSTERED (solarSystemID)    
+  CONSTRAINT combatZoneSystems_PK PRIMARY KEY  (solarSystemID)    
 )
 ;
 

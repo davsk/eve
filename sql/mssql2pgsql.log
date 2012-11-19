@@ -7,4 +7,14 @@ change nvarchar( to varchar(
 change word GO to ;
 change (' to (
 change ') to )
-
+delete CLUSTERED
+change varchar(max) to text
+change varchar(500) to text
+change varchar(256) to text
+change varchar(1000) to text
+change varchar(3000) to text
+comment IF OBJECT_ID
+comment DROP TABLE
+delete NONCLUSTERED
+delete COLLATE Latin1_General_CI_AI
+change ;\nCREATE to CREATE
