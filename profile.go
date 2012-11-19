@@ -8,6 +8,7 @@ import (
 	"dasa.cc/dae/user"
 	"dasa.cc/dae/render"
 	"labix.org/v2/mgo/bson"
+	"dasa.cc/eve/api"
 )
 
 func apikeys(w http.ResponseWriter, r *http.Request) *handler.Error {
@@ -22,18 +23,21 @@ func apikeys(w http.ResponseWriter, r *http.Request) *handler.Error {
 
 	u := user.Current(c, db)
 
-	var apiKeys []*APIKey
+	var data UserData
+	u.Data(&data)
+
+	var apiKeys []*api.APIKey
 
 	names := r.Form["keyname"]
 	ids := r.Form["keyid"]
 	codes := r.Form["keycode"]
 
 	for i := 0; i < len(names); i++ {
-		apiKeys = append(apiKeys, &APIKey{names[i], ids[i], codes[i]})
-	}
 
-	var data UserData
-	u.Data(&data)
+		apiKey := &api.APIKey{names[i], ids[i], codes[i], nil}
+		apiKey.Info = api.GetAPIKeyInfo(apiKey.Id, apiKey.Code)
+		apiKeys = append(apiKeys, apiKey)
+	}
 
 	data.APIKeys = apiKeys
 	if err := u.SetData(&data); err != nil {
