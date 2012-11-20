@@ -5,3 +5,5 @@ tags
 *.sublime*
 *.xiki
 res/img/eve/*
+csv/*
+
