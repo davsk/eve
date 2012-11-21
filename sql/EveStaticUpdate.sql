@@ -2,10 +2,9 @@
 
 -- Schema: dbo
 
-DROP SCHEMA dbo;
+DROP SCHEMA IF EXISTS dbo CASCADE;
 
-CREATE SCHEMA dbo
-  AUTHORIZATION postgres;
+CREATE SCHEMA dbo;
 
 GRANT ALL ON SCHEMA dbo TO postgres;
 GRANT ALL ON SCHEMA dbo TO public;

@@ -311,7 +311,7 @@ CREATE TABLE dbo.trnTranslations
   tcID        smallint       NOT NULL,
   keyID       int            NOT NULL,
   languageID  varchar(50)    NOT NULL,
-  [text]      text  NOT NULL,
+  text      text  NOT NULL,
   
   CONSTRAINT trnTranslations_PK PRIMARY KEY (tcID, keyID, languageID)
 )
@@ -435,8 +435,8 @@ CREATE TABLE dbo.crtRelationships
   childID           int,
 
   CONSTRAINT crtRelationships_relationship PRIMARY KEY  (relationshipID)
-)
-CREATE  INDEX crtRelationships_IX_parent ON dbo.crtRelationships(parentID)
+);
+CREATE  INDEX crtRelationships_IX_parent ON dbo.crtRelationships(parentID);
 CREATE  INDEX crtRelationships_IX_child ON dbo.crtRelationships(childID)
 ;
 
@@ -456,8 +456,8 @@ CREATE TABLE dbo.crtCertificates
   description         text,
 
   CONSTRAINT crtCertificates_PK PRIMARY KEY  (certificateID)
-)
-CREATE  INDEX crtCertificates_IX_category ON dbo.crtCertificates(categoryID)
+);
+CREATE  INDEX crtCertificates_IX_category ON dbo.crtCertificates(categoryID);
 CREATE  INDEX crtCertificates_IX_class ON dbo.crtCertificates(classID)
 ;
 
@@ -474,9 +474,9 @@ CREATE TABLE dbo.crtRecommendations
   recommendationLevel   smallint   NOT NULL DEFAULT(0),
   
   CONSTRAINT crtRecommendations_PK PRIMARY KEY  (recommendationID)
-)
-CREATE  INDEX crtRecommendations_IX_shipType ON crtRecommendations (shipTypeID)
-CREATE  INDEX crtRecommendations_IX_certificate ON crtRecommendations (certificateID)
+);
+CREATE  INDEX crtRecommendations_IX_shipType ON dbo.crtRecommendations(shipTypeID);
+CREATE  INDEX crtRecommendations_IX_certificate ON dbo.crtRecommendations(certificateID)
 ;
 
 
@@ -491,15 +491,15 @@ CREATE TABLE dbo.agtAgents
   divisionID     smallint,
   corporationID  int,
   locationID     int,
-  [level]        smallint,
+  level        smallint,
   quality        smallint,
   agentTypeID    int,
   isLocator      bit,
 
   CONSTRAINT agtAgents_PK PRIMARY KEY  (agentID)
-)
-CREATE  INDEX agtAgents_IX_corporation ON agtAgents (corporationID)
-CREATE  INDEX agtAgents_IX_station ON agtAgents (locationID)
+);
+CREATE  INDEX agtAgents_IX_corporation ON dbo.agtAgents(corporationID);
+CREATE  INDEX agtAgents_IX_station ON dbo.agtAgents(locationID)
 ;
 
 -- Research agents and their fields
@@ -513,7 +513,7 @@ CREATE TABLE dbo.agtResearchAgents
   typeID       int,
 
   CONSTRAINT agtResearchAgents_PK PRIMARY KEY  (agentID, typeID)
-)
+);
 CREATE  INDEX agtResearchAgents_IX_type ON dbo.agtResearchAgents (typeID)
 ;
 
@@ -540,7 +540,7 @@ CREATE TABLE dbo.agtAgentTypes
 CREATE TABLE dbo.chrAncestries
 (
   ancestryID        smallint,
-  ancestryName      varchar(100),
+  ancestryName      text,
   bloodlineID       smallint,
   description       text,
   perception        smallint,
@@ -562,7 +562,7 @@ CREATE TABLE dbo.chrAncestries
 CREATE TABLE dbo.chrAttributes
 (
   attributeID       smallint,
-  attributeName     varchar(100),
+  attributeName     text,
   description       text,
   iconID            int,
   shortDescription  text,
@@ -579,7 +579,7 @@ CREATE TABLE dbo.chrAttributes
 CREATE TABLE dbo.chrBloodlines
 (
   bloodlineID             smallint,
-  bloodlineName           varchar(100),
+  bloodlineName           text,
   raceID                  smallint,
   description             text,
   maleDescription         text,
@@ -610,7 +610,7 @@ CREATE TABLE dbo.chrBloodlines
 CREATE TABLE dbo.chrFactions
 (
   factionID             int,
-  factionName           varchar(100),
+  factionName           text,
   description           text,
   raceIDs               int,
   solarSystemID         int,
@@ -632,7 +632,7 @@ CREATE TABLE dbo.chrFactions
 CREATE TABLE dbo.chrRaces
 (
   raceID            smallint,
-  raceName          varchar(100),
+  raceName          text,
   description       text,
   iconID            int,
   shortDescription  text,
@@ -649,7 +649,7 @@ CREATE TABLE dbo.chrRaces
 CREATE TABLE dbo.crpActivities
 (
   activityID      smallint,
-  activityName    varchar(100),
+  activityName    text,
   description     text,
 
   CONSTRAINT crpActivities_PK PRIMARY KEY  (activityID)
@@ -665,7 +665,7 @@ CREATE TABLE dbo.crpNPCCorporationDivisions
 (
   corporationID   int,
   divisionID      smallint,
-  [size]          smallint,
+  size          smallint,
 
   CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (corporationID, divisionID)
 )
@@ -693,7 +693,7 @@ CREATE TABLE dbo.crpNPCCorporationResearchFields
 CREATE TABLE dbo.crpNPCCorporations
 (
   corporationID        int,
-  [size]               char(1),
+  size               char(1),
   extent               char(1),
   solarSystemID        int,
   investorID1          int,     
@@ -732,9 +732,9 @@ CREATE TABLE dbo.crpNPCCorporations
 CREATE TABLE dbo.crpNPCDivisions
 (
   divisionID    smallint,
-  divisionName  varchar(100),
+  divisionName  text,
   description   text,
-  leaderType    varchar(100),
+  leaderType    text,
 
   CONSTRAINT crpNPCDivisions_PK PRIMARY KEY  (divisionID)
 )
@@ -763,12 +763,12 @@ CREATE TABLE dbo.crpNPCCorporationTrades
 CREATE TABLE dbo.dgmAttributeTypes
 (
   attributeID           smallint,
-  attributeName         varchar(100),
+  attributeName         text,
   description           text,
   iconID                int,
   defaultValue          real,
   published             bit,
-  displayName           varchar(100),
+  displayName           text,
   unitID                smallint,
   stackable             bit,
   highIsGood            bit,
@@ -832,7 +832,7 @@ CREATE TABLE dbo.dgmEffects
   falloffAttributeID              smallint,
   disallowAutoRepeat              bit,
   published                       bit,
-  displayName                     varchar(100),
+  displayName                     text,
   isWarpSafe                      bit,
   rangeChance                     bit,
   electronicChance                bit,
@@ -881,7 +881,7 @@ CREATE TABLE dbo.eveIcons
 (
   iconID         int            NOT NULL,
   iconFile       text   NOT NULL  DEFAULT '',
-  [description]  text  NOT NULL  DEFAULT '',
+  description  text  NOT NULL  DEFAULT '',
   
   CONSTRAINT eveIcons_PK PRIMARY KEY  (iconID)
 )
@@ -901,7 +901,7 @@ CREATE TABLE dbo.eveIcons
 CREATE TABLE dbo.eveUnits
 (
   unitID       smallint,
-  unitName     varchar(100),
+  unitName     text,
   displayName  varchar(50),
   description  text,
 
@@ -965,7 +965,7 @@ CREATE TABLE dbo.invControlTowerResources
 CREATE TABLE dbo.invControlTowerResourcePurposes
 (
   purpose      smallint,
-  purposeText  varchar(100),
+  purposeText  text,
   --
   CONSTRAINT invControlTowerResourcePurposes_PK PRIMARY KEY  (purpose)
 )
@@ -985,9 +985,9 @@ CREATE TABLE dbo.invItems
                                      -- where as quantity = 1 signifies a stackable item with a quantity of 1
     --
     CONSTRAINT invItems_PK PRIMARY KEY  (itemID)
-)
-CREATE  INDEX items_IX_Location ON invItems (locationID)
-CREATE  INDEX items_IX_OwnerLocation ON invItems (ownerID, locationID)
+);
+CREATE  INDEX items_IX_Location ON dbo.invItems(locationID);
+CREATE  INDEX items_IX_OwnerLocation ON dbo.invItems(ownerID, locationID)
 ;
 
 --IF OBJECT_ID(dbo.invUniqueNames) IS NOT NULL
@@ -1001,9 +1001,9 @@ CREATE TABLE dbo.invUniqueNames
   groupID   int                                          NULL,
   --
   CONSTRAINT invUniqueNames_PK PRIMARY KEY  (itemID)
-)
-CREATE UNIQUE  INDEX invUniqueNames_UQ ON dbo.invUniqueNames (itemName)
-CREATE  INDEX invUniqueNames_IX_GroupName ON dbo.invUniqueNames (groupID, itemName)
+);
+CREATE UNIQUE  INDEX invUniqueNames_UQ ON dbo.invUniqueNames(itemName);
+CREATE  INDEX invUniqueNames_IX_GroupName ON dbo.invUniqueNames(groupID, itemName)
 ;
 
 --IF OBJECT_ID(dbo.invNames) IS NOT NULL
@@ -1043,7 +1043,7 @@ CREATE TABLE dbo.invCategories
 (
   categoryID    int,
  
-  categoryName  varchar(100)   ,
+  categoryName  text   ,
   description   text,
   iconID        int,
   published     bit,
@@ -1067,8 +1067,8 @@ CREATE TABLE dbo.invContrabandTypes
   attackMinSec      real,
 
   CONSTRAINT invContrabandTypes_PK PRIMARY KEY  (factionID, typeID)
-)
-  CREATE  INDEX invContrabandTypes_IX_type ON dbo.invContrabandTypes (typeID)
+);
+  CREATE  INDEX invContrabandTypes_IX_type ON dbo.invContrabandTypes(typeID)
 ;
 
 -- Flags
@@ -1079,7 +1079,7 @@ CREATE TABLE dbo.invFlags
 (
   flagID    smallint,
   flagName  varchar(200),
-  flagText  varchar(100),
+  flagText  text,
   orderID   int,
 
   CONSTRAINT invFlags_PK PRIMARY KEY  (flagID)
@@ -1095,7 +1095,7 @@ CREATE TABLE dbo.invGroups
   groupID               int,
   --
   categoryID            int,
-  groupName             varchar(100)   ,
+  groupName             text   ,
   description           text,
   iconID                int,
   useBasePrice          bit,
@@ -1107,8 +1107,8 @@ CREATE TABLE dbo.invGroups
   published             bit,
   
   CONSTRAINT invGroups_PK PRIMARY KEY  (groupID)
-)
-  CREATE  INDEX invGroups_IX_category ON dbo.invGroups (categoryID)
+);
+  CREATE  INDEX invGroups_IX_category ON dbo.invGroups(categoryID)
 ;
 
 
@@ -1121,7 +1121,7 @@ CREATE TABLE dbo.invMarketGroups
   marketGroupID    int,
   --
   parentGroupID    int,
-  marketGroupName  varchar(100),
+  marketGroupName  text,
   description      text,
   iconID           int,
   hasTypes         bit,
@@ -1138,7 +1138,7 @@ CREATE TABLE dbo.invMetaGroups
 (
   metaGroupID    smallint,
   --
-  metaGroupName  varchar(100),
+  metaGroupName  text,
   description    text,
   iconID         int,
 
@@ -1173,18 +1173,18 @@ CREATE TABLE dbo.invTypeReactions
   quantity        smallint,
   --
   CONSTRAINT pk_invTypeReactions PRIMARY KEY  (reactionTypeID, input, typeID)
-)
+);
 
 
 -- Types
 --IF OBJECT_ID(dbo.invTypes) IS NOT NULL
 --  DROP TABLE dbo.invTypes
-;
+
 CREATE TABLE dbo.invTypes
 (
   typeID               int,
   groupID              int,
-  typeName             varchar(100)   ,
+  typeName             text   ,
   description          text,
   mass                 real,
   volume               real,
@@ -1198,8 +1198,8 @@ CREATE TABLE dbo.invTypes
   iconID               int,
                                  
   CONSTRAINT invTypes_PK PRIMARY KEY  (typeID)
-)
-CREATE  INDEX invTypes_IX_Group ON dbo.invTypes (groupID)
+);
+CREATE  INDEX invTypes_IX_Group ON dbo.invTypes(groupID)
  ;
 
 
@@ -1286,8 +1286,8 @@ CREATE TABLE dbo.mapConstellationJumps
   toRegionID           int,
   --
   CONSTRAINT mapConstellationJumps_PK PRIMARY KEY  (fromConstellationID, toConstellationID)
-)
-CREATE  INDEX mapConstellationJumps_IX_fromRegion ON mapConstellationJumps(fromRegionID)
+);
+CREATE  INDEX mapConstellationJumps_IX_fromRegion ON dbo.mapConstellationJumps(fromRegionID)
 ;
 
 
@@ -1299,22 +1299,22 @@ CREATE TABLE dbo.mapConstellations
 (
   regionID             int,
   constellationID      int,
-  constellationName    varchar(100)  ,
+  constellationName    text  ,
   x                    real,
   y                    real,
   z                    real,
-  xMin                 real,
-  xMax                 real,
-  yMin                 real,
-  yMax                 real,
-  zMin                 real,
-  zMax                 real,
+  x_Min                 real,
+  x_Max                 real,
+  y_Min                 real,
+  y_Max                 real,
+  z_Min                 real,
+  z_Max                 real,
   factionID            int,
   radius               real,
   --
   CONSTRAINT mapConstellations_PK PRIMARY KEY  (constellationID)
-)
-CREATE  INDEX mapConstellations_IX_region ON mapConstellations(regionID)
+);
+CREATE  INDEX mapConstellations_IX_region ON dbo.mapConstellations(regionID)
 ;
 
 -- Denormalized Data
@@ -1334,21 +1334,21 @@ CREATE TABLE dbo.mapDenormalize
   y                real,
   z                real,
   radius           real,
-  itemName         varchar(100),
-  [security]       real,
+  itemName         text,
+  security       real,
   celestialIndex   smallint,
   orbitIndex       smallint,
   --
   CONSTRAINT mapDenormalize_PK PRIMARY KEY  (itemID)
-)
-CREATE  INDEX mapDenormalize_IX_groupRegion ON mapDenormalize(groupID, regionID)
-CREATE  INDEX mapDenormalize_IX_groupConstellation ON mapDenormalize(groupID, constellationID)
-CREATE  INDEX mapDenormalize_IX_groupSystem ON mapDenormalize(groupID, solarSystemID)
-CREATE  INDEX mapDenormalize_IX_system ON mapDenormalize(solarSystemID)
-CREATE  INDEX mapDenormalize_IX_constellation ON mapDenormalize(constellationID)
-CREATE  INDEX mapDenormalize_IX_region ON mapDenormalize(regionID)
-CREATE  INDEX mapDenormalize_IX_orbit ON mapDenormalize(orbitID)
-;
+);
+CREATE  INDEX mapDenormalize_IX_groupRegion ON dbo.mapDenormalize(groupID, regionID);
+CREATE  INDEX mapDenormalize_IX_groupConstellation ON dbo.mapDenormalize(groupID, constellationID);
+CREATE  INDEX mapDenormalize_IX_groupSystem ON dbo.mapDenormalize(groupID, solarSystemID);
+CREATE  INDEX mapDenormalize_IX_system ON dbo.mapDenormalize(solarSystemID);
+CREATE  INDEX mapDenormalize_IX_constellation ON dbo.mapDenormalize(constellationID);
+CREATE  INDEX mapDenormalize_IX_region ON dbo.mapDenormalize(regionID);
+CREATE  INDEX mapDenormalize_IX_orbit ON dbo.mapDenormalize(orbitID);
+
 
 
 -- Jumps
@@ -1372,18 +1372,18 @@ CREATE TABLE dbo.mapJumps
 CREATE TABLE dbo.mapLandmarks
 (
   landmarkID    smallint,
-  landmarkName  varchar(100),
-  description   varchar(7000),
+  landmarkName  text,
+  description   text,
   locationID    int,
   x             real,
   y             real,
   z             real,
   radius        real,
   iconID        int,
-  importance    smallint
+  importance    smallint,
   --
-  CONSTRAINT mapLandmarks_PK PRIMARY KEY  (landmarkID)
-)
+  CONSTRAINT mapLandmarks_PK PRIMARY KEY (landmarkID)
+);
 
 
 -- Region Jumps
@@ -1395,7 +1395,7 @@ CREATE TABLE dbo.mapRegionJumps
   fromRegionID  int  NOT NULL,
   toRegionID    int  NOT NULL,
   --
-  CONSTRAINT mapRegionJumps_PK PRIMARY KEY  (fromRegionID, toRegionID)
+  CONSTRAINT mapRegionJumps_PK PRIMARY KEY (fromRegionID, toRegionID)
 )
 ;
 
@@ -1407,16 +1407,16 @@ CREATE TABLE dbo.mapRegionJumps
 CREATE TABLE dbo.mapRegions
 (
   regionID    int,
-  regionName  varchar(100)  ,
+  regionName  text  ,
   x           real,
   y           real,
   z           real,
-  xMin        real,
-  xMax        real,
-  yMin        real,
-  yMax        real,
-  zMin        real,
-  zMax        real,
+  x_Min        real,
+  x_Max        real,
+  y_Min        real,
+  y_Max        real,
+  z_Min        real,
+  z_Max        real,
   factionID   int,
   radius      real,
   --
@@ -1438,9 +1438,9 @@ CREATE TABLE dbo.mapSolarSystemJumps
   toRegionID           int,
   --
   CONSTRAINT mapSolarSystemJumps_PK PRIMARY KEY  (fromSolarSystemID, toSolarSystemID)
-)
-CREATE  INDEX mapSolarSystemJumps_IX_fromRegion ON mapSolarSystemJumps(fromRegionID)
-CREATE  INDEX mapSolarSystemJumps_IX_fromConstellation ON mapSolarSystemJumps(fromConstellationID)
+);
+CREATE  INDEX mapSolarSystemJumps_IX_fromRegion ON dbo.mapSolarSystemJumps(fromRegionID);
+CREATE  INDEX mapSolarSystemJumps_IX_fromConstellation ON dbo.mapSolarSystemJumps(fromConstellationID)
 ;
 
 
@@ -1453,16 +1453,16 @@ CREATE TABLE dbo.mapSolarSystems
   regionID             int,
   constellationID      int,
   solarSystemID        int,
-  solarSystemName      varchar(100)  ,
+  solarSystemName      text  ,
   x                    real,
   y                    real,
   z                    real,
-  xMin                 real,
-  xMax                 real,
-  yMin                 real,
-  yMax                 real,
-  zMin                 real,
-  zMax                 real,
+  x_Min                 real,
+  x_Max                 real,
+  y_Min                 real,
+  y_Max                 real,
+  z_Min                 real,
+  z_Max                 real,
   luminosity           real,
   --
   border               bit,
@@ -1479,11 +1479,10 @@ CREATE TABLE dbo.mapSolarSystems
   securityClass        varchar(2),
   --
   CONSTRAINT mapSolarSystems_PK PRIMARY KEY  (solarSystemID)
-)
-CREATE  INDEX mapSolarSystems_IX_region ON mapSolarSystems(regionID)
-CREATE  INDEX mapSolarSystems_IX_constellation ON mapSolarSystems(constellationID)
-CREATE  INDEX mapSolarSystems_IX_security ON mapSolarSystems([security])
-;
+);
+CREATE  INDEX mapSolarSystems_IX_region ON dbo.mapSolarSystems(regionID);
+CREATE  INDEX mapSolarSystems_IX_constellation ON dbo.mapSolarSystems(constellationID);
+CREATE  INDEX mapSolarSystems_IX_security ON dbo.mapSolarSystems(security);
 
 -- Universe
 --IF OBJECT_ID(dbo.mapUniverse) IS NOT NULL
@@ -1492,16 +1491,16 @@ CREATE  INDEX mapSolarSystems_IX_security ON mapSolarSystems([security])
 CREATE TABLE dbo.mapUniverse
 (
   universeID    int,
-  universeName  varchar(100),
+  universeName  text,
   x             real,
   y             real,
   z             real,
-  xMin          real,
-  xMax          real,
-  yMin          real,
-  yMax          real,
-  zMin          real,
-  zMax          real,
+  x_Min          real,
+  x_Max          real,
+  y_Min          real,
+  y_Max          real,
+  z_Min          real,
+  z_Max          real,
   radius        real,
   --
   CONSTRAINT mapUniverse_PK PRIMARY KEY  (universeID)
@@ -1545,7 +1544,7 @@ CREATE TABLE dbo.ramTypeRequirements
 CREATE TABLE dbo.ramActivities
 (
   activityID     smallint,
-  activityName   varchar(100),
+  activityName   text,
   iconNo         varchar(5),
   description    text,
   published      bit,
@@ -1563,7 +1562,7 @@ CREATE TABLE dbo.ramAssemblyLines
   assemblyLineID                int,
   assemblyLineTypeID            smallint,
   containerID                   int, -- where it is (stationID)
-  nextFreeTime                  smalldatetime,
+  nextFreeTime                  date, -- DLS smalldatetime?
   UIGroupingID                  smallint, --user defined groupings (within a containment)
   costInstall                   real,
   costPerHour                   real,
@@ -1579,9 +1578,9 @@ CREATE TABLE dbo.ramAssemblyLines
   activityID                    smallint,
   --
   CONSTRAINT ramAssemblyLines_PK PRIMARY KEY  (assemblyLineID)
-)
-CREATE  INDEX ramAssemblyLines_IX_container ON ramAssemblyLines (containerID)
-CREATE  INDEX ramAssemblyLines_IX_owner ON ramAssemblyLines (ownerID)
+);
+CREATE  INDEX ramAssemblyLines_IX_container ON dbo.ramAssemblyLines(containerID);
+CREATE  INDEX ramAssemblyLines_IX_owner ON dbo.ramAssemblyLines(ownerID)
 ;
 
 -- Assembly Lines by Station
@@ -1599,9 +1598,9 @@ CREATE TABLE dbo.ramAssemblyLineStations
   regionID            int,
   --
   CONSTRAINT ramAssemblyLineStations_PK PRIMARY KEY  (stationID, assemblyLineTypeID)
-)
-CREATE  INDEX ramAssemblyLineStations_IX_region ON ramAssemblyLineStations (regionID)
-CREATE  INDEX ramAssemblyLineStations_IX_owner ON ramAssemblyLineStations (ownerID)
+);
+CREATE  INDEX ramAssemblyLineStations_IX_region ON dbo.ramAssemblyLineStations(regionID);
+CREATE  INDEX ramAssemblyLineStations_IX_owner ON dbo.ramAssemblyLineStations(ownerID)
 
 ;
 
@@ -1644,7 +1643,7 @@ CREATE TABLE dbo.ramAssemblyLineTypeDetailPerGroup
 CREATE TABLE dbo.ramAssemblyLineTypes
 (
   assemblyLineTypeID      smallint,
-  assemblyLineTypeName    varchar(100),
+  assemblyLineTypeName    text,
   description             text,
   baseTimeMultiplier      real,
   baseMaterialMultiplier  real,
@@ -1665,7 +1664,7 @@ CREATE TABLE dbo.staOperations
 (
   activityID             smallint,
   operationID            smallint,
-  operationName          varchar(100),
+  operationName          text,
   description            text,
   fringe                 smallint,
   corridor               smallint,
@@ -1702,7 +1701,7 @@ CREATE TABLE dbo.staOperationServices
 CREATE TABLE dbo.staServices
 (
   serviceID    int,
-  serviceName  varchar(100),
+  serviceName  text,
   description  text,
   --
   CONSTRAINT staServices_PK PRIMARY KEY  (serviceID)
@@ -1717,7 +1716,7 @@ CREATE TABLE dbo.staServices
 CREATE TABLE dbo.staStations
 (
   stationID                 int,
-  [security]                smallint,
+  security                smallint,
   dockingCostPerVolume      real,
   maxShipVolumeDockable     real,
   officeRentalCost          int,
@@ -1728,7 +1727,7 @@ CREATE TABLE dbo.staStations
   solarSystemID             int,
   constellationID           int,
   regionID                  int,
-  stationName               varchar(100)  ,
+  stationName               text  ,
   x                         real,
   y                         real,
   z                         real,
@@ -1737,14 +1736,14 @@ CREATE TABLE dbo.staStations
   reprocessingHangarFlag    smallint,
   --
   CONSTRAINT staStations_PK PRIMARY KEY  (stationID)
-)
-CREATE  INDEX staStations_IX_region ON staStations (regionID)
-CREATE  INDEX staStations_IX_system ON staStations (solarSystemID)
-CREATE  INDEX staStations_IX_constellation ON staStations (constellationID)
-CREATE  INDEX staStations_IX_operation ON staStations (operationID)
-CREATE  INDEX staStations_IX_type ON staStations (stationTypeID)
-CREATE  INDEX staStations_IX_corporation ON staStations (corporationID)
-;
+);
+CREATE  INDEX staStations_IX_region ON dbo.staStations(regionID);
+CREATE  INDEX staStations_IX_system ON dbo.staStations(solarSystemID);
+CREATE  INDEX staStations_IX_constellation ON dbo.staStations(constellationID);
+CREATE  INDEX staStations_IX_operation ON dbo.staStations(operationID);
+CREATE  INDEX staStations_IX_type ON dbo.staStations(stationTypeID);
+CREATE  INDEX staStations_IX_corporation ON dbo.staStations(corporationID);
+
 
 -- Types
 --IF OBJECT_ID(dbo.staStationTypes) IS NOT NULL
@@ -1776,7 +1775,7 @@ CREATE TABLE dbo.staStationTypes
 CREATE TABLE dbo.warCombatZones
 (
   combatZoneID    int            NOT NULL DEFAULT -1,
-  combatZoneName  varchar(100)  NULL,
+  combatZoneName  text  NULL,
   factionID       int            NULL,
   centerSystemID  int            NULL,
   description     text  NULL,
