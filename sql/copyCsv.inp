@@ -1,4 +1,5 @@
-
+\i EveStaticUpdate.sql
+\i ebs_DATADUMPpg.sql
 \copy dbo.agtAgents from ../csv/agtAgents.csv with delimiter ','  null as 'NULL' csv header
 \copy dbo.agtAgentTypes from ../csv/agtAgentTypes.csv with delimiter ','  null as 'NULL' csv header
 \copy dbo.agtResearchAgents from ../csv/agtResearchAgents.csv with delimiter ','  null as 'NULL' csv header
@@ -19,7 +20,7 @@
 \copy dbo.crtRecommendations from ../csv/crtRecommendations.csv with delimiter ','  null as 'NULL' csv header
 \copy dbo.crtRelationships from ../csv/crtRelationships.csv with delimiter ','  null as 'NULL' csv header
 \copy dbo.dgmAttributeCategories from ../csv/dgmAttributeCategories.csv with delimiter ','  null as 'NULL' csv header
-\copy dbo.dgmAttributeTypes from ../csv/dgmAttributeTypes.csv with delimiter ','  null as 'NULL' csv header
+\copy dbo.dgmAttributeTypes from ../csv/dgmAttributeTypes.csv with delimiter ','  null as '""' csv header
 \copy dbo.dgmEffects from ../csv/dgmEffects.csv with delimiter ','  null as 'NULL' csv header
 \copy dbo.dgmTypeAttributes from ../csv/dgmTypeAttributes.csv with delimiter ','  null as 'NULL' csv header
 \copy dbo.dgmTypeEffects from ../csv/dgmTypeEffects.csv with delimiter ','  null as 'NULL' csv header

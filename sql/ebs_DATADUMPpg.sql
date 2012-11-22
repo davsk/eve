@@ -663,11 +663,15 @@ CREATE TABLE dbo.crpActivities
 
 CREATE TABLE dbo.crpNPCCorporationDivisions
 (
-  corporationID   int,
-  divisionID      smallint,
-  size          smallint,
+  --corporationID   int,
+  --divisionID      smallint,
+  --size          smallint,
+  activityID      int,
+  activityName  text,
+  description text,
 
-  CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (corporationID, divisionID)
+  --CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (corporationID, divisionID)
+  CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (activityID)
 )
 ;
 
@@ -718,7 +722,7 @@ CREATE TABLE dbo.crpNPCCorporations
   sizeFactor           real,
   stationCount         smallint,
   stationSystemCount   smallint,
-  description          varchar(4000),
+  description          text ,
   iconID               int,
 
   CONSTRAINT crpNPCCorporations_PK PRIMARY KEY  (corporationID)

@@ -1,0 +1,27 @@
+ERROR:  invalid input syntax for integer: "Agriculture"
+CONTEXT:  COPY crpnpccorporationdivisions, line 2, column divisionid: "Agriculture"
+ERROR:  value too long for type character(1)
+CONTEXT:  COPY crpnpccorporations, line 2, column size: "1000010"
+ERROR:  invalid input syntax for integer: ""
+CONTEXT:  COPY crtcertificates, line 245, column certificateid: ""
+ERROR:  invalid input syntax for integer: ""
+CONTEXT:  COPY dgmattributetypes, line 2, column iconid: ""
+ERROR:  invalid input syntax for integer: "0.0 = 100% 1.0 = 0%"
+CONTEXT:  COPY eveunits, line 29, column unitid: "0.0 = 100% 1.0 = 0%"
+ERROR:  extra data after last expected column
+CONTEXT:  COPY invcategories, line 2: "0,0,0,0,0,0,0"
+ERROR:  missing data for column "iconid"
+CONTEXT:  COPY invgroups, line 222: "324,6,Assault Ship,Da Leet Frigates "
+ERROR:  invalid input syntax for integer: ""
+CONTEXT:  COPY invmarketgroups, line 2, column parentgroupid: ""
+ERROR:  missing data for column "mass"
+CONTEXT:  COPY invtypes, line 155: "265,1158,Heavy Defender Missile I,Defensive missile used to destroy incoming missiles."
+ERROR:  bit string length 4 does not match type bit(1)
+CONTEXT:  COPY ramactivities, line 2, column published: "True"
+ERROR:  invalid input syntax for integer: "dbo.invCategories"
+CONTEXT:  COPY ramassemblylines, line 2, column containerid: "dbo.invCategories"
+.csv: No such file or directory
+ERROR:  missing data for column "description"
+CONTEXT:  COPY ramassemblylinetypes, line 2: ""1","NonAgent""
+ERROR:  missing data for column "translatedkey"
+CONTEXT:  COPY translationtables, line 2: "1,NonAgent"

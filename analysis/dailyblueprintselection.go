@@ -43,7 +43,7 @@ func DailyBlueprintSelection(db *sql.DB) (err error) {
 	)
 
 	// for each T1 Blueprint
-	blueprints, err := db.Query("SELECT `blueprintTypeID` , `productTypeID` , `productionTime`, 'productivityModifier' FROM `invBlueprintTypes`WHERE `techLevel` =1")
+	blueprints, err := db.Query("SELECT `blueprintTypeID` , `productTypeID` , `productionTime`, 'productivityModifier' FROM `dbo.invBlueprintTypes`WHERE `techLevel` =1")
 	if err != nil {
 		return err
 	}
@@ -97,19 +97,19 @@ LOOP:
 		SumCostLow = SumCostHigh
 
 		// func (db *DB) QueryRow(query string, args ...interface{}) *Row
-		prices := db.QueryRow(fmt.Sprintf("SELECT `jita_qty_30`,'5pct_price_sell', '5pct_price_buy', '5pct_date' FROM 'eve_inv_types' WHERE 'typeId' = %v", productTypeId))
+		prices := db.QueryRow(fmt.Sprintf("SELECT `jita_qty_30`,'5pct_price_sell', '5pct_price_buy', '5pct_date' FROM 'public.eve_inv_types' WHERE 'typeId' = %v", productTypeId))
 		err = prices.Scan(Quantity, PriceHigh, PriceLow, PriceDate)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 
-		materials, err := db.Query(fmt.Sprintf("SELECT * FROM 'invBuildMaterials' WHERE 'something' = %v", productTypeId))
+		materials, err := db.Query(fmt.Sprintf("SELECT * FROM 'dbo.invTypeMaterials' WHERE 'something' = %v", productTypeId))
 
 		for materials.Next(&CostQuantity) {
 			err = materials.Scan()
 
-			prices := db.QueryRow(fmt.Sprintf("SELECT '5pct_price_sell', '5pct_price_buy', '5pct_date' FROM 'eve_inv_types' WHERE 'typeId' = %v", productTypeId))
+			prices := db.QueryRow(fmt.Sprintf("SELECT '5pct_price_sell', '5pct_price_buy', '5pct_date' FROM 'public.eve_inv_types' WHERE 'typeId' = %v", productTypeId))
 			err = prices.Scan(&CostHigh, &CostLow, &CostDate)
 			if err != nil {
 				log.Println(err)
@@ -153,7 +153,7 @@ LOOP:
 			zScore *= 8
 		}
 		if zScore > 0 {
-			names := db.QueryRow(fmt.Sprintf("SELECT 'itemName' FROM 'eveName' WHERE 'itemId' = %v", productTypeId))
+			names := db.QueryRow(fmt.Sprintf("SELECT 'itemName' FROM 'dbo.eveName' WHERE 'itemId' = %v", productTypeId))
 			err = names.Scan(&itemName)
 			if err != nil {
 				// critical error, should never happen
