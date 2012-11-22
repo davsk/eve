@@ -1,10 +1,15 @@
 package analysis
 
 import (
-	"fmt"
 	"testing"
+	"fmt"
 )
 
 func TestPrinting(t *testing.T) {
-	fmt.Println("hello world")
+	var err error
+
+	err = DailyBlueprintSelection()
+	if err != nil {
+		fmt.Println(err)
+	}
 }

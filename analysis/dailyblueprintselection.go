@@ -13,11 +13,12 @@ Output Files: dasaProfitableT1 dasaBuildableT1
 package analysis
 
 import (
+	_ "github.com/bmizerany/pq"
 	"database/sql"
 	"fmt"
 	"log"
 	"math"
-	"time"
+	//"time"
 )
 
 type ISK float64
@@ -30,7 +31,7 @@ func DailyBlueprintSelection() (err error) {
 
 	var (
 		// Threshold Values Found in MagicNumber Table
-		minDemand       float64 = 5
+		//minDemand       float64 = 5
 		minProfitHour   float64 = 200
 		minProfitMargin float64 = .20
 		factoryStart    ISK     = 1000.00
@@ -58,10 +59,11 @@ func DailyBlueprintSelection() (err error) {
 	
 
 	// for each T1 Blueprint
-	blueprints, err := db.Query("SELECT `blueprintTypeID` , `productTypeID` , `productionTime`, 'productivityModifier' FROM `dbo.invBlueprintTypes`WHERE `techLevel` =1")
+	blueprints, err := db.Query("SELECT blueprintTypeID, productTypeID, productionTime, productivityModifier FROM dbo.invBlueprintTypes WHERE techLevel = 1;")
 	if err != nil {
 		return err
 	}
+	log.Println("Processing Blueprints")
 
 LOOP:
 	for blueprints.Next() {
@@ -70,17 +72,21 @@ LOOP:
 			blueprintTypeId int
 			productTypeId   int
 			productionTime  int
-			batch           int
+			productivityModifier           int
 			// Product Prices
-			Quantity  int
+			//sQuantity  string
+			//Quantity float64
 			PriceHigh ISK
 			PriceLow  ISK
-			PriceDate time.Time
+			PriceDate int64
+			// material
+			materialTypeId int 
 			// Cost Prices
 			CostQuantity float64
 			CostHigh     ISK
 			CostLow      ISK
-			CostDate     time.Time
+			CostDate     int64
+			// LocalDate  	Time 
 			// Sums
 			SumCostHigh ISK
 			SumCostLow  ISK
@@ -99,12 +105,13 @@ LOOP:
 			itemName string
 		)
 
-		err = blueprints.Scan(&blueprintTypeId, &productTypeId, &productionTime, &batch)
+		err = blueprints.Scan(&blueprintTypeId, &productTypeId, &productionTime, &productivityModifier)
 		if err != nil {
 			// critical error
 			return err
 		}
 
+		log.Println("blueprintTypeId := ", blueprintTypeId, productTypeId, productionTime, productivityModifier)
 		ActualTime = float64(productionTime) * (1 - (.05 * (float64(userIndustry) - 1)))
 		FactoryRuns = int(math.Floor(factoryDays * 24.0 * 60.0 / ActualTime))
 		//  Factory Cost
@@ -112,19 +119,26 @@ LOOP:
 		SumCostLow = SumCostHigh
 
 		// func (db *DB) QueryRow(query string, args ...interface{}) *Row
-		prices := db.QueryRow(fmt.Sprintf("SELECT `jita_qty_30`,'5pct_price_sell', '5pct_price_buy', '5pct_date' FROM 'public.eve_inv_types' WHERE 'typeId' = %v", productTypeId))
-		err = prices.Scan(Quantity, PriceHigh, PriceLow, PriceDate)
+		//prices := db.QueryRow(fmt.Sprintf("SELECT jita_qty_30, 5pct_price_sell, 5pct_price_buy, 5pct_date FROM public.eve_inv_types WHERE type_id = %v ;", productTypeId))
+		//err = prices.Scan(&sQuantity, &PriceHigh, &PriceLow, &PriceDate)
+		prices := db.QueryRow(fmt.Sprintf("SELECT 5pct_price_sell, 5pct_price_buy, 5pct_date FROM public.eve_inv_types WHERE type_id = %v ;", productTypeId))
+		err = prices.Scan(&PriceHigh, &PriceLow, &PriceDate)
+		if err != nil {
+			//log.Println(err)
+			continue
+		}
+
+		log.Println(PriceHigh,PriceLow,PriceDate)
+
+		materials, err := db.Query(fmt.Sprintf("SELECT materialTypeId, quantity FROM dbo.invTypeMaterials WHERE typeId = %v ;", productTypeId))
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 
-		materials, err := db.Query(fmt.Sprintf("SELECT * FROM 'dbo.invTypeMaterials' WHERE 'something' = %v", productTypeId))
-
 		for materials.Next() {
-			err = materials.Scan()
-
-			prices := db.QueryRow(fmt.Sprintf("SELECT '5pct_price_sell', '5pct_price_buy', '5pct_date' FROM 'public.eve_inv_types' WHERE 'typeId' = %v", productTypeId))
+			err = materials.Scan(&materialTypeId, &CostQuantity)
+			prices := db.QueryRow(fmt.Sprintf("SELECT 5pct_price_sell, 5pct_price_buy, 5pct_date FROM public.eve_inv_types WHERE type_id = %v ;", materialTypeId))
 			err = prices.Scan(&CostHigh, &CostLow, &CostDate)
 			if err != nil {
 				log.Println(err)
@@ -134,7 +148,7 @@ LOOP:
 				SumCostLow += ISK(CostQuantity * CostLow.Val())
 
 				// earliest date
-				if CostDate.Before(PriceDate) {
+				if CostDate < PriceDate {
 					PriceDate = CostDate
 				}
 				//PriceDate = min(PriceDate, CostDate)
@@ -142,19 +156,22 @@ LOOP:
 		}
 
 		// post processing per row
-		UnitCost = CostHigh / ISK(batch)
-		ProfitHigh = (PriceHigh * ISK(batch) - CostLow)
-		ProfitLow = (PriceLow * ISK(batch) - CostHigh)
+		//LocalDate = Unix(PriceDate,0)
+		//Quantity = SetString(sQuantity,0)
+		UnitCost = CostHigh / ISK(productivityModifier)
+		ProfitHigh = (PriceHigh * ISK(productivityModifier) - CostLow)
+		ProfitLow = (PriceLow * ISK(productivityModifier) - CostHigh)
 		MarginHigh = float64(ProfitHigh / PriceHigh)
 		MarginLow = float64(ProfitLow / PriceLow)
 		ProfitHigh = (ProfitHigh * 60 /ISK(ActualTime))
 		ProfitLow = (ProfitLow * 60 / ISK(ActualTime))
-		Demand = (float64(Quantity) * factoryDays / 30) / float64(FactoryRuns * batch)
-		zScore = math.Log(ProfitHigh.Val()/minProfitHour) * MarginHigh * math.Log(Demand)
-
+		// Demand = (float64(Quantity) * factoryDays / 30) / float64(FactoryRuns * productivityModifier)
+		//zScore = math.Log(ProfitHigh.Val()/minProfitHour) * MarginHigh * math.Log(Demand)
+        zScore = math.Log(ProfitHigh.Val()/minProfitHour) * MarginHigh 
+        /*
 		if Demand < minDemand {
 			zScore = 0
-		}
+		}*/
 		if ProfitHigh.Val() < minProfitHour {
 			zScore = 0
 		}
@@ -168,7 +185,7 @@ LOOP:
 			zScore *= 8
 		}
 		if zScore > 0 {
-			names := db.QueryRow(fmt.Sprintf("SELECT 'itemName' FROM 'dbo.eveName' WHERE 'itemId' = %v", productTypeId))
+			names := db.QueryRow(fmt.Sprintf("SELECT itemName FROM dbo.invNames WHERE itemId = %v ;", productTypeId))
 			err = names.Scan(&itemName)
 			if err != nil {
 				// critical error, should never happen
