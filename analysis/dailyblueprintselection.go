@@ -26,7 +26,7 @@ func (isk ISK) Val() float64 {
 	return float64(isk)
 }
 
-func DailyBlueprintSelection(db *sql.DB) (err error) {
+func DailyBlueprintSelection() (err error) {
 
 	var (
 		// Threshold Values Found in MagicNumber Table
@@ -35,13 +35,13 @@ func DailyBlueprintSelection(db *sql.DB) (err error) {
 		minProfitMargin float64 = .20
 		factoryStart    ISK     = 1000.00
 		factoryHour     ISK     = 333.00
-		factoryDays     int     = 14
+		factoryDays     float64 = 14.0
 		//  User Data found in header
-		userId       int = 1002348
+		//  userId       int = 1002348
 		userName string = "David Skinner"
 		//  User Data found in skill tree
 		userIndustry int = 5
-		userPE       int = 5
+		// userPE       int = 5
 	)
 
 	// login
@@ -69,7 +69,6 @@ LOOP:
 			// blueprints
 			blueprintTypeId int
 			productTypeId   int
-			productionBatch int
 			productionTime  int
 			batch           int
 			// Product Prices
@@ -86,6 +85,7 @@ LOOP:
 			SumCostHigh ISK
 			SumCostLow  ISK
 			canBuild    bool = true
+			UnitCost ISK
 			// Results
 			ActualTime  float64
 			FactoryRuns int
@@ -106,9 +106,9 @@ LOOP:
 		}
 
 		ActualTime = float64(productionTime) * (1 - (.05 * (float64(userIndustry) - 1)))
-		FactoryRuns = math.Floor((FactoryDays * 24 * 60) / ActualTime)
+		FactoryRuns = int(math.Floor(factoryDays * 24.0 * 60.0 / ActualTime))
 		//  Factory Cost
-		SumCostHigh = (FactoryStart + (FactoryHour * FactoryRuns * ActualTime / 60)) / FactoryRuns
+		SumCostHigh = (factoryStart + (factoryHour * ISK(FactoryRuns) * ISK(ActualTime) / 60.0)) / ISK(FactoryRuns)
 		SumCostLow = SumCostHigh
 
 		// func (db *DB) QueryRow(query string, args ...interface{}) *Row
@@ -121,7 +121,7 @@ LOOP:
 
 		materials, err := db.Query(fmt.Sprintf("SELECT * FROM 'dbo.invTypeMaterials' WHERE 'something' = %v", productTypeId))
 
-		for materials.Next(&CostQuantity) {
+		for materials.Next() {
 			err = materials.Scan()
 
 			prices := db.QueryRow(fmt.Sprintf("SELECT '5pct_price_sell', '5pct_price_buy', '5pct_date' FROM 'public.eve_inv_types' WHERE 'typeId' = %v", productTypeId))
@@ -142,14 +142,14 @@ LOOP:
 		}
 
 		// post processing per row
-		UnitCost = CostHigh / batch
-		ProfitHigh = float64(PriceHigh*batch) - CostLow
-		ProfitLow = float64(PriceLow*batch) - CostHigh
+		UnitCost = CostHigh / ISK(batch)
+		ProfitHigh = (PriceHigh * ISK(batch) - CostLow)
+		ProfitLow = (PriceLow * ISK(batch) - CostHigh)
 		MarginHigh = float64(ProfitHigh / PriceHigh)
 		MarginLow = float64(ProfitLow / PriceLow)
-		ProfitHigh = float64(ProfitHigh * 60 / ActualTime)
-		ProfitLow = float64(ProfitLow * 60 / ActualTime)
-		Demand = (quantity * FactoryDays / 30) / (FactoryRuns * batch)
+		ProfitHigh = (ProfitHigh * 60 /ISK(ActualTime))
+		ProfitLow = (ProfitLow * 60 / ISK(ActualTime))
+		Demand = (float64(Quantity) * factoryDays / 30) / float64(FactoryRuns * batch)
 		zScore = math.Log(ProfitHigh.Val()/minProfitHour) * MarginHigh * math.Log(Demand)
 
 		if Demand < minDemand {
@@ -175,7 +175,7 @@ LOOP:
 				panic(err)
 			}
 
-			fmt.Println(canBuild, itemName, UnitCost, PriceLow, PriceHigh, zScore, Demand, ProfitLow, MarginLow, ProfitHigh, MarginHigh, priceDate)
+			fmt.Println(canBuild, itemName, UnitCost, PriceLow, PriceHigh, zScore, Demand, ProfitLow, MarginLow, ProfitHigh, MarginHigh, PriceDate)
 		}
 	}
 
