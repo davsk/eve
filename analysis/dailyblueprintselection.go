@@ -36,11 +36,26 @@ func DailyBlueprintSelection(db *sql.DB) (err error) {
 		factoryStart    ISK     = 1000.00
 		factoryHour     ISK     = 333.00
 		factoryDays     int     = 14
-		//  User Data found in skill tree
+		//  User Data found in header
 		userId       int = 1002348
+		userName string = "David Skinner"
+		//  User Data found in skill tree
 		userIndustry int = 5
 		userPE       int = 5
 	)
+
+	// login
+	db, err := sql.Open("postgres", "user=goeve password=goeve dbname=eve sslmode=disable")
+	if err != nil {
+		log.Fatal("sql.Open failed:", err)
+	}
+	defer db.Close()
+
+	// title, subtitle, columns
+	fmt.Println("Daily Blueprint Selection")
+	fmt.Println("Prepared for " + userName)
+	fmt.Println("canBuild", "itemName", "UnitCost", "PriceLow", "PriceHigh", "zScore", "Demand", "ProfitLow", "MarginLow", "ProfitHigh", "MarginHigh", "priceDate")
+	
 
 	// for each T1 Blueprint
 	blueprints, err := db.Query("SELECT `blueprintTypeID` , `productTypeID` , `productionTime`, 'productivityModifier' FROM `dbo.invBlueprintTypes`WHERE `techLevel` =1")
