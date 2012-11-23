@@ -10,6 +10,6 @@ func TestPrinting(t *testing.T) {
 
 	err = DailyBlueprintSelection()
 	if err != nil {
-		fmt.Println(err)
+		t.Fatal(err)
 	}
 }
