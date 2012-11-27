@@ -2,7 +2,7 @@
  -- View: "productionCost"
  -- DROP VIEW "productionCost";
 
-CREATE OR REPLACE VIEW "productioncost" AS
+CREATE OR REPLACE VIEW productioncost AS
 SELECT invtypematerials.typeid,
        sum(eve_inv_types."5pct_price_sell" * invtypematerials.quantity) AS CostSell,
        sum(eve_inv_types."5pct_price_buy" * invtypematerials.quantity) AS CostBuy
@@ -13,7 +13,7 @@ GROUP BY invtypematerials.typeid;
  -- View: "productionPrice"
  -- DROP VIEW "productionPrice";
 
-CREATE OR REPLACE VIEW "productionprice" AS
+CREATE OR REPLACE VIEW productionprice AS
 SELECT invblueprinttypes.blueprinttypeid,
        invblueprinttypes.parentblueprinttypeid,
        invblueprinttypes.producttypeid,

@@ -1,9 +1,14 @@
 Notes on data conversion
 
- psql eve <psql1.inp 2>psql.log
+ AutoHotKey.ahk is used on MsSql 2008R2 to export all tables as CSV files that are placed in the eve/csv directory. Details are contained in that file.
 
+The following script edits some of the CSV files and creates the input file used by psql to drop and recreate the dbo schema and import all of the new CSV files.
+    eve/sql$ ./EveStaticUpdate.sh
+    $ psql eve <psql.inp 2>psql.log
 
-Issue 1
+publicViews.sql creates the views that tie together the different schemas with data from users, marketdata, and cpp. It has to be the last item that is run after the replacement of any tables.
+
+Issue 1 - resolved with sed
 psql:ebs_DATADUMPpg.sql:1425: ERROR:  column name "xmin" conflicts with a system column name
 
 conflict resolved by changing column names, 
