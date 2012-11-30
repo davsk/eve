@@ -25,3 +25,12 @@ CREATE TABLE dbo.eveGraphics(
 	graphicName text NOT NULL DEFAULT '',
  CONSTRAINT eveGraphics_PK PRIMARY KEY (graphicID)
  );
+
+CREATE TABLE dbo.translationTables(
+	sourceTable			text,
+	destinationTable	text,
+	translatedKey 		text,
+	tcGroupID			int,
+	tcID 				int,
+CONSTRAINT translationTables_PK PRIMARY KEY (sourceTable, destinationTable, translatedKey)
+);

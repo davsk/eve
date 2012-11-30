@@ -411,7 +411,7 @@ CREATE TABLE dbo.planetSchematicsTypeMap
   schematicID     smallint,
   typeID          int,
   quantity        smallint,
-  isInput         bit,
+  isInput         boolean,
 
   CONSTRAINT planetSchematicsTypeMap_PK PRIMARY KEY  (schematicID, typeID)
 )
@@ -494,7 +494,7 @@ CREATE TABLE dbo.agtAgents
   level        smallint,
   quality        smallint,
   agentTypeID    int,
-  isLocator      bit,
+  isLocator      boolean,
 
   CONSTRAINT agtAgents_PK PRIMARY KEY  (agentID)
 );
@@ -663,15 +663,15 @@ CREATE TABLE dbo.crpActivities
 
 CREATE TABLE dbo.crpNPCCorporationDivisions
 (
-  --corporationID   int,
-  --divisionID      smallint,
-  --size          smallint,
-  activityID      int,
-  activityName  text,
-  description text,
+  corporationID   int,
+  divisionID      smallint,
+  size          smallint,
+  --activityID      int,
+  --activityName  text,
+  --description text,
 
-  --CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (corporationID, divisionID)
-  CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (activityID)
+  CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (corporationID, divisionID)
+  --CONSTRAINT crpNPCCorporationDivisions_PK PRIMARY KEY  (activityID)
 )
 ;
 
@@ -713,7 +713,7 @@ CREATE TABLE dbo.crpNPCCorporations
   publicShares         bigint,
   initialPrice         int,
   minSecurity          real,
-  scattered            bit,
+  scattered            boolean,
   fringe               smallint,
   corridor             smallint,
   hub                  smallint,
@@ -771,11 +771,11 @@ CREATE TABLE dbo.dgmAttributeTypes
   description           text,
   iconID                int,
   defaultValue          real,
-  published             bit,
+  published             boolean,
   displayName           text,
   unitID                smallint,
-  stackable             bit,
-  highIsGood            bit,
+  stackable             boolean,
+  highIsGood            boolean,
   categoryID            smallint,
 
   CONSTRAINT dgmAttributeTypes_PK PRIMARY KEY  (attributeID)  
@@ -827,20 +827,20 @@ CREATE TABLE dbo.dgmEffects
   description                     text,
   guid                            varchar(60),
   iconID                          int,
-  isOffensive                     bit,
-  isAssistance                    bit,
+  isOffensive                     boolean,
+  isAssistance                    boolean,
   durationAttributeID             smallint,
   trackingSpeedAttributeID        smallint,
   dischargeAttributeID            smallint,
   rangeAttributeID                smallint,
   falloffAttributeID              smallint,
-  disallowAutoRepeat              bit,
-  published                       bit,
+  disallowAutoRepeat              boolean,
+  published                       boolean,
   displayName                     text,
-  isWarpSafe                      bit,
-  rangeChance                     bit,
-  electronicChance                bit,
-  propulsionChance                bit,
+  isWarpSafe                      boolean,
+  rangeChance                     boolean,
+  electronicChance                boolean,
+  propulsionChance                boolean,
   distribution                    smallint,
   sfxName                         varchar(20),
   npcUsageChanceAttributeID       smallint,
@@ -859,7 +859,7 @@ CREATE TABLE dbo.dgmTypeEffects
 (
   typeID      int,
   effectID    smallint,
-  isDefault   bit,
+  isDefault   boolean,
 
   CONSTRAINT dgmTypeEffects_PK PRIMARY KEY (typeID, effectID)
 )
@@ -884,8 +884,8 @@ CREATE TABLE dbo.dgmTypeEffects
 CREATE TABLE dbo.eveIcons
 (
   iconID         int            NOT NULL,
-  iconFile       text   NOT NULL  DEFAULT '',
-  description  text  NOT NULL  DEFAULT '',
+  iconFile       text,
+  description  text,
   
   CONSTRAINT eveIcons_PK PRIMARY KEY  (iconID)
 )
@@ -1015,8 +1015,8 @@ CREATE  INDEX invUniqueNames_IX_GroupName ON dbo.invUniqueNames(groupID, itemNam
  
 CREATE TABLE dbo.invNames
 (
-    itemID     bigint         NOT NULL,
-    itemName   varchar(200)  NOT NULL,
+    itemID     bigint NOT NULL,
+    itemName   text,
     
     CONSTRAINT invNames_PK PRIMARY KEY  (itemID)
 )
@@ -1050,7 +1050,7 @@ CREATE TABLE dbo.invCategories
   categoryName  text   ,
   description   text,
   iconID        int,
-  published     bit,
+  published     boolean,
 
   CONSTRAINT invCategories_PK PRIMARY KEY  (categoryID)
 )
@@ -1102,13 +1102,13 @@ CREATE TABLE dbo.invGroups
   groupName             text   ,
   description           text,
   iconID                int,
-  useBasePrice          bit,
-  allowManufacture      bit,
-  allowRecycler         bit,
-  anchored              bit,
-  anchorable            bit,
-  fittableNonSingleton  bit,
-  published             bit,
+  useBasePrice          boolean,
+  allowManufacture      boolean,
+  allowRecycler         boolean,
+  anchored              boolean,
+  anchorable            boolean,
+  fittableNonSingleton  boolean,
+  published             boolean,
   
   CONSTRAINT invGroups_PK PRIMARY KEY  (groupID)
 );
@@ -1128,7 +1128,7 @@ CREATE TABLE dbo.invMarketGroups
   marketGroupName  text,
   description      text,
   iconID           int,
-  hasTypes         bit,
+  hasTypes         boolean,
 
   CONSTRAINT invMarketGroups_PK PRIMARY KEY  (marketGroupID)
 )
@@ -1172,7 +1172,7 @@ CREATE TABLE dbo.invMetaTypes
 CREATE TABLE dbo.invTypeReactions
 (
   reactionTypeID  int,
-  input           bit,
+  input           boolean,
   typeID          int,
   quantity        smallint,
   --
@@ -1196,7 +1196,7 @@ CREATE TABLE dbo.invTypes
   portionSize          int,
   raceID               smallint,
   basePrice            money,
-  published            bit,
+  published            boolean,
   marketGroupID        int,
   chanceOfDuplicating  real,
   iconID               int,
@@ -1254,25 +1254,25 @@ CREATE TABLE dbo.mapLocationWormholeClasses
 CREATE TABLE dbo.mapCelestialStatistics
 (
   celestialID     int,
-  temperature     real,
+  temperature     double precision,
   spectralClass   varchar(10),
-  luminosity      real,
-  age             real,
-  life            real,
-  orbitRadius     real,
-  eccentricity    real,
-  massDust        real,
-  massGas         real,
-  fragmented      bit,
-  density         real,
-  surfaceGravity  real,
-  escapeVelocity  real,
-  orbitPeriod     real,
-  rotationRate    real,
-  locked          bit,
-  pressure        real,
-  radius          real,
-  mass            real,
+  luminosity      double precision,
+  age             double precision,
+  life            double precision,
+  orbitRadius     double precision,
+  eccentricity    double precision,
+  massDust        double precision,
+  massGas         double precision,
+  fragmented      boolean,
+  density         double precision,
+  surfaceGravity  double precision,
+  escapeVelocity  double precision,
+  orbitPeriod     double precision,
+  rotationRate    double precision,
+  locked          boolean,
+  pressure        double precision,
+  radius          double precision,
+  mass            double precision,
   --
   CONSTRAINT mapCelestialStatistics_PK PRIMARY KEY  (celestialID)
 )
@@ -1469,13 +1469,13 @@ CREATE TABLE dbo.mapSolarSystems
   z_Max                 real,
   luminosity           real,
   --
-  border               bit,
-  fringe               bit,
-  corridor             bit,
-  hub                  bit,
-  international        bit,
-  regional             bit,
-  constellation        bit,
+  border               boolean,
+  fringe               boolean,
+  corridor             boolean,
+  hub                  boolean,
+  international        boolean,
+  regional             boolean,
+  constellation        boolean,
   security             real,
   factionID            int,
   radius               real,
@@ -1536,7 +1536,7 @@ CREATE TABLE dbo.ramTypeRequirements
   --
   quantity        int      NULL,
   damagePerJob    real    NULL,
-  recycle         bit      NULL,
+  recycle         boolean     NULL,
   --
   CONSTRAINT ramTypeRequirements_PK PRIMARY KEY  (typeID, activityID, requiredTypeID)
 )
@@ -1551,7 +1551,7 @@ CREATE TABLE dbo.ramActivities
   activityName   text,
   iconNo         varchar(5),
   description    text,
-  published      bit,
+  published      boolean,
   --
   CONSTRAINT ramActivities_PK PRIMARY KEY  (activityID)
 )
@@ -1766,7 +1766,7 @@ CREATE TABLE dbo.staStationTypes
   operationID             smallint,
   officeSlots             smallint,
   reprocessingEfficiency  real,
-  conquerable             bit,
+  conquerable             boolean,
   --
   CONSTRAINT stationTypes_PK PRIMARY KEY  (stationTypeID)
 )
