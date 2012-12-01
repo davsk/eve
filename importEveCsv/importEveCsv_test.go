@@ -20,12 +20,10 @@ import (
 func TestImportEveCsv(t *testing.T) {
 	var err error
 
-	/*
-		err = ImportEveCsv("../sql/tmp/invItems.csv", "../sql/tmp/invItems.tmp")
-		if err != nil {
-			t.Fatal(err)
-		}
-	*/
+	err = ImportEveCsv("../sql/tmp/invItems.csv", "../sql/tmp/invItems.tmp")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	err = ImportEveCsv("../sql/tmp/trnTranslations.csv", "../sql/tmp/trnTranslations.tmp")
 	if err != nil {
