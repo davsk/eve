@@ -16,6 +16,9 @@ package importEveCsv
 import (
 	"bufio"
 	"bytes"
+	"fmt"
+	"io"
+	"log"
 	"os"
 	"unicode/utf8"
 )
@@ -40,17 +43,18 @@ func ImportEveCsv(fileNameIn string, fileNameOut string) (err error) {
 		fileOut *os.File
 		lineIn  []byte
 		lineOut []byte
-		//prefix  bool
 	)
 
+	log.Println("Processing file " + fileNameIn)
+
 	if fileIn, err = os.Open(fileNameIn); err != nil {
-		return err
+		return fmt.Errorf("Can't open fileNameIn: %s", err)
 	}
 	defer fileIn.Close()
 	reader = bufio.NewReader(fileIn)
 
 	if fileOut, err = os.Create(fileNameOut); err != nil {
-		return err
+		return fmt.Errorf("Can't create fileNameOut: %s", err)
 	}
 	defer fileOut.Close()
 
@@ -64,17 +68,35 @@ func ImportEveCsv(fileNameIn string, fileNameOut string) (err error) {
 		)
 
 		// Read a line
-		if lineIn, _, err = reader.ReadLine(); err != nil {
-			break
+		if lineIn, err = reader.ReadBytes('\n'); err != nil {
+			if err == io.EOF {
+				return nil
+			}
+			return fmt.Errorf("Error while calling ReadBytes: %s", err)
 		}
 
 		pos := 0
-		length := utf8.RuneCount(lineIn)
+		length := len(lineIn)
+
+		//log.Println(fmt.Sprintf("Handling new line of length %v", length))
 
 		for pos != length {
+
+			if pos > length {
+				return fmt.Errorf("Somehow pos advanced past length! pos: %v, length: %v\n\nLine: %s", pos, length, lineIn)
+			}
+
+			//log.Println(fmt.Sprintf("Handling position %v of %v", pos, length))
+
 			var fixQuote bool = false
 			p := lineIn[pos:]
 			r, l := utf8.DecodeRune(p)
+			pos += l
+
+			if r == utf8.RuneError {
+				return fmt.Errorf("Error decoding rune! %s", r)
+			}
+
 			if r != utf8.RuneError {
 				r1 = r2
 				r2 = r3
@@ -102,8 +124,6 @@ func ImportEveCsv(fileNameIn string, fileNameOut string) (err error) {
 					}
 				}
 			}
-
-			pos += l
 
 			// parse the line
 			//  Every valid quote is at beginning or ending of line 
