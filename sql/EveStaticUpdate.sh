@@ -5,6 +5,8 @@
 echo "\i EveStaticUpdate.sql" >psql.inp
 echo "\i ebs_DATADUMPpg.sql" >>psql.inp
 
+mkdir tmp
+
 for file in ../csv/*
 do
 	filename=$(basename "${file}")

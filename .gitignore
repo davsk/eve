@@ -6,4 +6,5 @@ tags
 *.xiki
 res/img/eve/*
 csv/*
-
+sql/tmp/*
+*.inp
