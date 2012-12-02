@@ -18,6 +18,7 @@ import (
 	_ "github.com/bmizerany/pq"
 	"log"
 	"math"
+	"os"
 	//"time"
 )
 
@@ -28,8 +29,14 @@ func (isk ISK) Val() float64 {
 }
 
 func DailyBlueprintSelection() (err error) {
+	const (
+		printIt bool = true
+	)
 
 	var (
+		// print to file test.prn
+		fileOut *os.File
+
 		// Threshold Values Found in MagicNumber Table
 		//minDemand       float64 = 5
 		minProfitHour   float64 = 200
@@ -45,6 +52,13 @@ func DailyBlueprintSelection() (err error) {
 		userIndustry int = 5
 		// userPE       int = 5
 	)
+
+	if printIt {
+		if fileOut, err = os.Create("test.prn"); err != nil {
+			return fmt.Errorf("Can't create test.prn: %s", err)
+		}
+		defer fileOut.Close()
+	}
 
 	// login
 	db, err := sql.Open("postgres", "user=goeve password=goeve dbname=eve sslmode=disable")
@@ -71,6 +85,12 @@ func DailyBlueprintSelection() (err error) {
 		"Profit High", 
 		"Margin High")
 
+	if printIt {
+		_, err = fileOut.WriteString("\"canBuild\",\"itemName\",\"Cost Low\",\"Cost High\",\"Price Low\",\"Price High\",\"zScore\",\"Demand\",\"Profit Low\",\"Margin Low\",\"Profit High\",\"Margin High\"\n"); if err != nil {
+			return err
+		}
+	}
+	
 	// for each T1 Blueprint
 	blueprints, err := db.Query("SELECT * FROM public.productionProfit WHERE techLevel = 1;")
 	if err != nil {
@@ -168,6 +188,15 @@ func DailyBlueprintSelection() (err error) {
 			//if zScore > 0 {
 				fmt.Println(canBuild, name, sumCostBuy, sumCostSell, priceBuy.Float64 , priceSell.Float64, zScore, demand.Int64, profitLow, marginLow, profitHigh, marginHigh)
 			//}
+			if printIt {
+				_, err = fileOut.WriteString(fmt(
+					"%t,\"%s\",%f,%f,%f,%f,%f,%d,%f,%f,%f,%f\n",
+					canBuild, name, sumCostBuy, sumCostSell, priceBuy.Float64 , priceSell.Float64, zScore, demand.Int64, profitLow, marginLow, profitHigh, marginHigh))
+				if err != nil {
+					return err
+				}
+			}
+		
 		}		
 	}
 
