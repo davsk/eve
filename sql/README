@@ -4,6 +4,13 @@ Notes on data conversion
 
 The following script edits some of the CSV files and creates the input file used by psql to drop and recreate the dbo schema and import all of the new CSV files.
     eve/sql$ ./EveStaticUpdate.sh
+    
+Spurious line feeds and quotes are fixed by running
+    importEveCsv_test.go
+
+The resulting tmp files need to replace the original .csv files so
+    $ mv tmp/trnTranslations.tmp tmp/trnTranslations.csv
+    $ mv tmp/invItems.tmp tmp/invItems.csv
     $ psql eve <psql.inp 2>psql.log
 
 publicViews.sql creates the views that tie together the different schemas with data from users, marketdata, and cpp. It has to be the last item that is run after the replacement of any tables.

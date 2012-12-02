@@ -26,16 +26,7 @@ import (
 func ImportEveCsv(fileNameIn string, fileNameOut string) (err error) {
 	const (
 		iQuote = '"'
-		lQuote = '"'
-
 		iComma = ','
-		lComma = ','
-
-		iL = ','
-		lL = ','
-
-		iN = ','
-		lN = ','
 	)
 	var (
 		reader  *bufio.Reader
@@ -58,6 +49,7 @@ func ImportEveCsv(fileNameIn string, fileNameOut string) (err error) {
 	}
 	defer fileOut.Close()
 
+	// parse the line
 	for {
 		var (
 			valid bool = false
@@ -80,14 +72,17 @@ func ImportEveCsv(fileNameIn string, fileNameOut string) (err error) {
 
 		//log.Println(fmt.Sprintf("Handling new line of length %v", length))
 
-		for pos != length {
+		for pos < (length - 1) {
 
-			if pos > length {
-				return fmt.Errorf("Somehow pos advanced past length! pos: %v, length: %v\n\nLine: %s", pos, length, lineIn)
-			}
+			//if pos > length {
+			//	return fmt.Errorf("Somehow pos advanced past length! pos: %v, length: %v\n\nLine: %s", pos, length, lineIn)
+			//}
 
 			//log.Println(fmt.Sprintf("Handling position %v of %v", pos, length))
 
+			//  Every valid quote is at beginning or ending of line 
+			//  or next to comma that is next to a quote or null. 
+			//  Invalid quotes can be changed to tick marks.
 			var fixQuote bool = false
 			p := lineIn[pos:]
 			r, l := utf8.DecodeRune(p)
@@ -97,38 +92,31 @@ func ImportEveCsv(fileNameIn string, fileNameOut string) (err error) {
 				return fmt.Errorf("Error decoding rune! %s", r)
 			}
 
-			if r != utf8.RuneError {
-				r1 = r2
-				r2 = r3
-				r3 = r
-				if r2 == iQuote {
-					if r1 == 0 {
-						isOdd = true
-					} else if isOdd {
-						if r3 == iComma {
-							isOdd = false
-						} else {
-							fixQuote = true
-						}
-					} else if r1 == iComma {
-						isOdd = true
+			r1 = r2
+			r2 = r3
+			r3 = r
+			if r2 == iQuote {
+				if r1 == 0 {
+					isOdd = true
+				} else if isOdd {
+					if r3 == iComma {
+						isOdd = false
 					} else {
 						fixQuote = true
 					}
-				}
-				if r2 != 0 {
-					if fixQuote {
-						_, err = fileOut.WriteString("'")
-					} else {
-						_, err = fileOut.WriteString(string(r2))
-					}
+				} else if r1 == iComma {
+					isOdd = true
+				} else {
+					fixQuote = true
 				}
 			}
-
-			// parse the line
-			//  Every valid quote is at beginning or ending of line 
-			//  or next to comma that is next to a quote or null. 
-			//  Invalid quotes can be changed to tick marks.
+			if r2 != 0 {
+				if fixQuote {
+					_, err = fileOut.WriteString("'")
+				} else {
+					_, err = fileOut.WriteString(string(r2))
+				}
+			}
 		}
 
 		//  Every valid line ends with ,null\n or \"\n 

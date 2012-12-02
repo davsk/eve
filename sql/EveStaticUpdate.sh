@@ -42,7 +42,7 @@ do
 			elif [ "${filename}" == "invTypes" ]
 			then
 				echo "sed processing " ${filename}
-				sed -i "s/\"borrowed\"/'borrowed'/g;s/,nullA/,\"A/g;s/.\" /. /g" tmp/${filename}.csv
+				# sed -i "s/\"borrowed\"/'borrowed'/g;s/,nullA/,\"A/g;s/.\" /. /g" tmp/${filename}.csv
 			elif [ "${filename}" == "mapCelestialStatistics" ]
 			then
 				echo "Test"
@@ -57,9 +57,13 @@ do
 	fi
 done
 
-gawk 'BEGIN{RS="\n\"\n";ORS="\"\n";}$0' tmp/trnTranslations.csv >tmp/trnTranslations.tmp
-rm tmp/trnTranslations.csv
-mv tmp/trnTranslations.tmp tmp/trnTranslations.csv
+# gawk 'BEGIN{RS="\n\"\n";ORS="\"\n";}$0' tmp/trnTranslations.csv >tmp/trnTranslations.tmp
+# rm tmp/trnTranslations.csv
+# mv tmp/trnTranslations.tmp tmp/trnTranslations.csv
 
 echo "\q" >>psql.inp
-echo "next command $ psql eve <psql.inp 2>psql.log"
+echo "next commands:" 
+echo "	importEveCsv_test.go"
+echo "iconv -f UTF-8 -t UTF-8 -o tmp/trnTranslations.csv -c tmp/trnTranslations.tmp"
+echo "$ mv tmp/invTypes.tmp tmp/invTypes.csv"
+echo "$ psql eve <psql.inp 2>psql.log"
