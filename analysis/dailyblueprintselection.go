@@ -22,10 +22,18 @@ import (
 	//"time"
 )
 
-type ISK float64
+type ISK int64
+
+func (isk ISK) Set(f float64) {
+	isk = ISK(f * 100)
+}
 
 func (isk ISK) Val() float64 {
-	return float64(isk)
+	return float64(isk)/100
+}
+
+func (isk ISK) String() string {
+	return fmt.Sprintf("%d.%02d", int64(isk)/100, int64(isk)%100)
 }
 
 func DailyBlueprintSelection() (err error) {
@@ -189,8 +197,8 @@ func DailyBlueprintSelection() (err error) {
 				fmt.Println(canBuild, name, sumCostBuy, sumCostSell, priceBuy.Float64 , priceSell.Float64, zScore, demand.Int64, profitLow, marginLow, profitHigh, marginHigh)
 			//}
 			if printIt {
-				_, err = fileOut.WriteString(fmt(
-					"%t,\"%s\",%f,%f,%f,%f,%f,%d,%f,%f,%f,%f\n",
+				_, err = fileOut.WriteString(fmt.Sprintf(
+					"%t,\"%s\",%.2f,%.2f,%.2f,%.2f,%.2f,%d,%.2f,%.2f,%.2f,%.2f\n",
 					canBuild, name, sumCostBuy, sumCostSell, priceBuy.Float64 , priceSell.Float64, zScore, demand.Int64, profitLow, marginLow, profitHigh, marginHigh))
 				if err != nil {
 					return err
