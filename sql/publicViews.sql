@@ -25,7 +25,7 @@ SELECT invblueprinttypes.blueprinttypeid,
        invblueprinttypes.maxproductionlimit,
        eve_inv_types.name,
        eve_inv_types.icon_name,
-       real (eve_inv_types.jita_qty_30 * invblueprinttypes.productiontime /invblueprinttypes.productivitymodifier) AS Demand,
+       eve_inv_types.jita_qty_30 * invblueprinttypes.productiontime /invblueprinttypes.productivitymodifier AS Demand,
        eve_inv_types."5pct_price_sell" AS PriceSell,
        eve_inv_types."5pct_price_buy" AS PriceBuy
 FROM dbo.invblueprinttypes,
