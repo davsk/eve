@@ -10,7 +10,7 @@ Spurious line feeds and quotes are fixed by running
 
 The resulting tmp files need to replace the original .csv files so
     $ mv tmp/trnTranslations.tmp tmp/trnTranslations.csv
-    $ mv tmp/invItems.tmp tmp/invItems.csv
+    $ mv tmp/invTypes.tmp tmp/invTypes.csv
     $ psql eve <psql.inp 2>psql.log
 
 publicViews.sql creates the views that tie together the different schemas with data from users, marketdata, and cpp. It has to be the last item that is run after the replacement of any tables.
