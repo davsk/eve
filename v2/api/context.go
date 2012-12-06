@@ -15,35 +15,54 @@ industry = cs.SkillLevel(3300)
 */
 package api
 
+type Status int
+
+const (
+	StatusFound Status = iota
+	StatusMissingCorpId
+	StatusMissingCharId
+	StatusMissingAll
+)
+
+var StatusString = map[Status]string{
+	StatusFound:         "charId and corpId found.",
+	StatusMissing:       "charId and corpId are missing",
+	StatusMissingCorpId: "charId found, corpId missing.",
+	StatusMissingCharId: "corpId found, charId missing",
+}
+
 // apiContext contains all of the values shared by all of the API calls
 type apiContext struct {
-	charId int
-	corpId int
+	charId     int
+	corpId     int
 	testServer bool
-	charKeyId int
-	charCode string
-	charCak int
-	corpKeyId int
-	corpCode string
-	corpCak int 
-	status int
+	charKeyId  int
+	charCode   string
+	charCak    int
+	corpKeyId  int
+	corpCode   string
+	corpCak    int
+	status     Status
 }
 
 type apiCall struct {
 	context *apiContext
 	baseUrl string
-	data []byte
+	data    []byte
 	status
 }
 
 func (a *apiCall) BaseUrl() string {
-	if a.testServer ? "https://api.testeveonline.com" : "https://api.eveonline.com" 	
+	if a.testServer {
+		return "https://api.testeveonline.com"
+	}
+	return "https://api.eveonline.com"
 }
 
 type charCorpCall struct {
 	apiCall
 	cakMask int
-	apiId int
+	apiId   int
 }
 
 type charCall struct {
@@ -51,12 +70,12 @@ type charCall struct {
 }
 
 func (c *charCall) setBaseUrl(cmd string) {
-	c.baseUrl =  fmt.sprintf("%s/char/%s.xml.aspx?keyID=%s&vCode=%s&characterID=%s", 
+	c.baseUrl = fmt.sprintf("%s/char/%s.xml.aspx?keyID=%s&vCode=%s&characterID=%s",
 		c.BaseUrl(),
-		cmd, 
+		cmd,
 		c.context.charKeyId,
 		c.context.charCode,
-		c.context.charId)	
+		c.context.charId)
 }
 
 func (c *charCall) loadData() {
@@ -84,7 +103,7 @@ func (c *CharSheet) Open() {
 }
 
 // NewContext inits values needed for APIs 
-func (this apiContext) NewContext(charId int, corpId int, testServer bool) ctx apiContext, err Err {
+func (this apiContext) NewContext(charId int, corpId int, testServer bool) (ctx apiContext, err error) {
 	this.charId = charId
 	this.corpId = corpId
 	this.testServer = testServer
@@ -93,14 +112,6 @@ func (this apiContext) NewContext(charId int, corpId int, testServer bool) ctx a
 	return this, status
 }
 
-
 func (this apiContext) Status() string {
-	const (
-		statusString []string = [
-			"charId and corpId found.",
-			"charId found, corpId missing.",
-			"corpId found, charId missing",
-			"charId and corpId are missing"]
-	)	
-	return statusString[this.status]
+	return StatusString[this.status]
 }
