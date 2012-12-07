@@ -65,42 +65,7 @@ type charCorpCall struct {
 	apiId   int
 }
 
-type charCall struct {
-	charCorpCall
-}
 
-func (c *charCall) setBaseUrl(cmd string) {
-	c.baseUrl = fmt.sprintf("%s/char/%s.xml.aspx?keyID=%s&vCode=%s&characterID=%s",
-		c.BaseUrl(),
-		cmd,
-		c.context.charKeyId,
-		c.context.charCode,
-		c.context.charId)
-}
-
-func (c *charCall) loadData() {
-	// lookup db
-	// if !expired
-	//   load from db
-	// if expired
-	//   load from api
-	// if api failed
-	//   load from db
-	// return status	
-}
-
-type CharSheet struct {
-	charCall
-}
-
-func (c *CharSheet) Open() {
-	c.setBaseUrl("CharacterString")
-	c.apiId = 4
-	c.cakMask = 8
-	c.loadData()
-	// optional move data to struct
-	return c
-}
 
 // NewContext inits values needed for APIs 
 func (this apiContext) NewContext(charId int, corpId int, testServer bool) (ctx apiContext, err error) {
