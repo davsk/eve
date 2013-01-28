@@ -15,7 +15,7 @@ mkdir -p tmp
 
 case "$1" in
 	"")
-		echo "Usage: ${0##*/} daily | monthly | static"
+		cd
 		;;
 	"static")
 		# THESE ARE UPDATED ONLY WHEN THE DATA CHANGES, YOU DON'T NEED THEM EVERY NIGHT.
@@ -40,9 +40,6 @@ case "$1" in
 		wget -P tmp http://eve-marketdata.com/developers/mysql_eve_inv_types.txt.gz
 		wget -P tmp http://eve-marketdata.com/developers/mysql_items_buying.txt.gz
 		wget -P tmp http://eve-marketdata.com/developers/mysql_items_selling.txt.gz
-		wget -P tmp http://eve-marketdata.com/developers/mysql_items_buying_jita.txt.gz
-		wget -P tmp http://eve-marketdata.com/developers/mysql_items_selling_jita.txt.gz
-		wget -P tmp http://eve-marketdata.com/developers/mysql_station_rank.txt.gz
 		wget -P tmp http://eve-marketdata.com/developers/mysql_region_type_updates.txt.gz
 		wget -P tmp http://eve-marketdata.com/developers/mysql_region_type_hist_updates.txt.gz
 
@@ -50,11 +47,16 @@ case "$1" in
 		;;
 	"monthly")
 		# updated daily but only needed monthly
-		wget -P tmp http://eve-marketdata.com/developers/mysql_items_history.txt.gz
+		wget -P tmp http://eve-marketdata.com/developers/mysql_station_rank.txt.gz
+		#wget -P tmp http://eve-marketdata.com/developers/mysql_items_history_theforge_90.txt.gz
+		load
+
+		# large files
+		#wget -P tmp http://eve-marketdata.com/developers/mysql_items_history.txt.gz
 		wget -P tmp http://eve-marketdata.com/developers/mysql_items_history_30.txt.gz
-		wget -P tmp http://eve-marketdata.com/developers/mysql_items_history_theforge_90.txt.gz
 		gzip -d tmp/*.gz
 		ls tmp/*.txt | awk '{print "./convert.awk "$1" > "$1".new; mv "$1".new "$1"; ./psql-split.sh "$1}'
+		rm tmp/*.txt
 		;;
 esac
 
