@@ -62,4 +62,4 @@ case "$1" in
 esac
 
 rmdir tmp
-psql --dbname=eve --file=../sql/PublicViews.sql
+psql --dbname=eve --file=../sql/publicViews.sql
