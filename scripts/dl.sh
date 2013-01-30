@@ -12,10 +12,11 @@ function load {
 }
 
 mkdir -p tmp
+psql --dbname=eve --file=../sql/dropPublicViews.sql
 
 case "$1" in
 	"")
-		cd
+		echo "Usage: ${0##*/} daily | monthly | static"
 		;;
 	"static")
 		# THESE ARE UPDATED ONLY WHEN THE DATA CHANGES, YOU DON'T NEED THEM EVERY NIGHT.
@@ -61,3 +62,4 @@ case "$1" in
 esac
 
 rmdir tmp
+psql --dbname=eve --file=../sql/PublicViews.sql

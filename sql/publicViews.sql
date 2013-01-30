@@ -32,6 +32,22 @@ FROM dbo.invblueprinttypes,
      eve_inv_types
 WHERE invblueprinttypes.producttypeid = eve_inv_types.type_id;
 
+
+-- View: productionprofit
+
+-- DROP VIEW productionprofit;
+
+CREATE OR REPLACE VIEW productionprofit AS 
+ SELECT productionprice.blueprinttypeid, productionprice.parentblueprinttypeid, productionprice.producttypeid, productionprice.productiontime, productionprice.techlevel, productionprice.productivitymodifier, productionprice.materialmodifier, productionprice.wastefactor, productionprice.maxproductionlimit, productionprice.name, productionprice.icon_name, productionprice.demand, productionprice.pricesell, productionprice.pricebuy, productioncost.costsell / productionprice.productivitymodifier::double precision AS costsell, productioncost.costbuy / productionprice.productivitymodifier::double precision AS costbuy
+   FROM productionprice
+   LEFT JOIN productioncost ON productionprice.producttypeid = productioncost.typeid;
+
+ALTER TABLE productionprofit
+  OWNER TO david;
+GRANT ALL ON TABLE productionprofit TO david;
+GRANT ALL ON TABLE productionprofit TO goeve;
+
+
  -- View: productiontest
  -- DROP VIEW productiontest;
 
