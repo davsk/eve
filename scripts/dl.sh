@@ -1,5 +1,10 @@
 #! /usr/bin/env bash
 
+# crontab -e
+# 10 5 * * * /home/david/workspace/src/dasa.cc/eve/scripts/dl.sh daily
+# 10 6 1 * * /home/david/workspace/src/dasa.cc/eve/scripts/dl.sh monthly
+
+
 function load {
 	gzip -d tmp/*.gz
 	echo "Working!"
@@ -12,7 +17,7 @@ function load {
 }
 
 mkdir -p tmp
-psql --dbname=eve --file=../sql/dropPublicViews.sql
+su - postgres -c "psql --dbname=eve --file=../sql/dropPublicViews.sql"
 
 case "$1" in
 	"")
@@ -62,4 +67,4 @@ case "$1" in
 esac
 
 rmdir tmp
-psql --dbname=eve --file=../sql/publicViews.sql
+su - postgres -c "psql --dbname=eve --file=../sql/publicViews.sql"
