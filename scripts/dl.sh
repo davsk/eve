@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
 # crontab -e
-# 10 5 * * * /home/david/workspace/src/dasa.cc/eve/scripts/dl.sh daily
-# 10 6 1 * * /home/david/workspace/src/dasa.cc/eve/scripts/dl.sh monthly
+# 10 5 * * * root /home/david/workspace/src/dasa.cc/eve/scripts/dl.sh daily
+# 10 6 1 * * root /home/david/workspace/src/dasa.cc/eve/scripts/dl.sh monthly
 
 
 function load {
