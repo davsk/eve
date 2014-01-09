@@ -8,9 +8,8 @@ import (
 	"dasa.cc/dae/user"
 	"labix.org/v2/mgo/bson"
 	"net/http"
-
 	"database/sql"
-	_ "github.com/bmizerany/pq"
+	_ "github.com/lib/pq"
 	"log"
 )
 
